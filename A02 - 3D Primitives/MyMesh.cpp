@@ -273,7 +273,34 @@ void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions,
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	std::vector<vector3> vertices;
+
+	// Set vertex info
+	vertices.push_back(vector3(0.0f, -a_fHeight/2.0f, 0.0f));
+
+	GLfloat theta = 0;
+
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		vertices.push_back(vector3(static_cast<GLfloat>(sin(theta)) * a_fRadius,
+			-a_fHeight / 2.0f,
+			-static_cast<GLfloat>(cos(theta)) * a_fRadius));
+
+		theta += ((2 * PI) / a_nSubdivisions);
+	}
+
+	vertices.push_back(vector3(0.0f, a_fHeight / 2.0f, 0.0f));
+
+	// Bottom faces
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		AddTri(vertices[0], vertices[i + 1], vertices[i + 2]);
+	}
+	AddTri(vertices[0], vertices[a_nSubdivisions], vertices[1]);
+
+	// Vertical faces
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		AddTri(vertices[a_nSubdivisions + 1], vertices[i + 2], vertices[i + 1]);
+	}
+	AddTri(vertices[a_nSubdivisions], vertices[a_nSubdivisions + 1], vertices[1]);
 	// -------------------------------
 
 	// Adding information about color
@@ -297,7 +324,52 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	// Bottom vertices
+	std::vector<vector3 > verticesBot;
+	verticesBot.push_back(vector3(0.0f, -a_fHeight / 2.0f, 0.0f));
+	GLfloat theta = 0;
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		theta += static_cast<GLfloat>(2 * PI / a_nSubdivisions);
+		vector3 temp = vector3(static_cast<GLfloat>(cos(theta)) * a_fRadius,
+			-a_fHeight / 2.0f,
+			-static_cast<GLfloat>(sin(theta)) * a_fRadius);
+		verticesBot.push_back(temp);
+	}
+
+	// Top vertices
+	std::vector<vector3 > verticesTop;
+	verticesTop.push_back(vector3(0.0f, a_fHeight / 2.0f, 0.0f));
+	vector3 vHeight = vector3(0.0f, a_fHeight, 0.0f);
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		verticesTop.push_back(verticesBot[i + 1] + vHeight);
+	}
+
+	// Bottom Faces
+	for (int i = 1; i < a_nSubdivisions; i++)
+	{
+		AddTri(verticesBot[0], verticesBot[i + 1], verticesBot[i]);
+	}
+	AddTri(verticesBot[0], verticesBot[1], verticesBot[a_nSubdivisions]);
+	
+	// Top Faces
+	for (int i = 1; i < a_nSubdivisions; i++)
+	{
+		AddTri(verticesTop[0], verticesTop[i], verticesTop[i + 1]);
+	}
+	AddTri(verticesTop[0], verticesTop[a_nSubdivisions], verticesTop[1]);
+
+	// Side Faces
+	for (int i = 1; i < a_nSubdivisions; i++)
+	{
+		AddTri(verticesBot[i], verticesBot[i + 1], verticesTop[i]);
+
+		AddTri(verticesTop[i], verticesBot[i + 1], verticesTop[i + 1]);
+	}
+	AddTri(verticesBot[a_nSubdivisions], verticesBot[1], verticesTop[a_nSubdivisions]);
+
+	AddTri(verticesTop[a_nSubdivisions], verticesBot[1], verticesTop[1]);
 	// -------------------------------
 
 	// Adding information about color
@@ -327,7 +399,103 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	// Top vertices
+	std::vector<vector3 > verticesTopOuter;
+	GLfloat theta = 0;
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		theta += static_cast<GLfloat>(2 * PI / a_nSubdivisions);
+		vector3 temp = vector3(static_cast<GLfloat>(cos(theta)) * a_fOuterRadius,
+			a_fHeight / 2.0f,
+			-static_cast<GLfloat>(sin(theta)) * a_fOuterRadius);
+		verticesTopOuter.push_back(temp);
+	}
+
+	std::vector<vector3 > verticesTopInner;
+	theta = 0;
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		theta += static_cast<GLfloat>(2 * PI / a_nSubdivisions);
+		vector3 temp = vector3(static_cast<GLfloat>(cos(theta)) * a_fInnerRadius,
+			a_fHeight / 2.0f,
+			-static_cast<GLfloat>(sin(theta)) * a_fInnerRadius);
+		verticesTopInner.push_back(temp);
+	}
+
+	// Bottom vertices
+	std::vector<vector3 > verticesBotOuter;
+	theta = 0;
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		theta += static_cast<GLfloat>(2 * PI / a_nSubdivisions);
+		vector3 temp = vector3(static_cast<GLfloat>(cos(theta)) * a_fOuterRadius,
+			-a_fHeight / 2.0f,
+			-static_cast<GLfloat>(sin(theta)) * a_fOuterRadius);
+		verticesBotOuter.push_back(temp);
+	}
+
+	std::vector<vector3 > verticesBotInner;
+	theta = 0;
+	for (int i = 0; i < a_nSubdivisions; i++)
+	{
+		theta += static_cast<GLfloat>(2 * PI / a_nSubdivisions);
+		vector3 temp = vector3(static_cast<GLfloat>(cos(theta)) * a_fInnerRadius,
+			-a_fHeight / 2.0f,
+			-static_cast<GLfloat>(sin(theta)) * a_fInnerRadius);
+		verticesBotInner.push_back(temp);
+	}
+
+	// Top faces
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesTopInner[i], verticesTopOuter[i], verticesTopOuter[i + 1]);
+	}
+	AddTri(verticesTopInner[a_nSubdivisions - 1], verticesTopOuter[a_nSubdivisions - 1], verticesTopOuter[0]);
+
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesTopOuter[i + 1], verticesTopInner[i + 1], verticesTopInner[i]);
+	}
+	AddTri(verticesTopOuter[0], verticesTopInner[0], verticesTopInner[a_nSubdivisions - 1]);
+
+	// Bottom faces
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesBotOuter[i + 1], verticesBotOuter[i], verticesBotInner[i]);
+	}
+	AddTri(verticesBotOuter[0], verticesBotOuter[a_nSubdivisions - 1], verticesBotInner[a_nSubdivisions - 1]);
+
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesBotInner[i], verticesBotInner[i + 1], verticesBotOuter[i + 1]);
+	}
+	AddTri(verticesBotInner[a_nSubdivisions - 1], verticesBotInner[0], verticesBotOuter[0]);
+
+	// Vertical Inside faces
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesTopInner[i], verticesBotInner[i + 1], verticesBotInner[i]);
+	}
+	AddTri(verticesTopInner[a_nSubdivisions - 1], verticesBotInner[0], verticesBotInner[a_nSubdivisions - 1]);
+
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesTopInner[i + 1], verticesBotInner[i + 1], verticesTopInner[i]);
+	}
+	AddTri(verticesTopInner[0], verticesBotInner[0], verticesTopInner[a_nSubdivisions - 1]);
+
+	// Vertical outside faces
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesBotOuter[i], verticesBotOuter[i + 1], verticesTopOuter[i]);
+	}
+	AddTri(verticesBotOuter[a_nSubdivisions - 1], verticesBotOuter[0], verticesTopOuter[a_nSubdivisions - 1]);
+
+	for (int i = 0; i < a_nSubdivisions - 1; i++)
+	{
+		AddTri(verticesTopOuter[i + 1], verticesTopOuter[i], verticesBotOuter[i + 1]);
+	}
+	AddTri(verticesTopOuter[0], verticesTopOuter[a_nSubdivisions - 1], verticesBotOuter[0]);
 	// -------------------------------
 
 	// Adding information about color
@@ -384,7 +552,52 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	std::vector<std::vector<vector3>> vertices;
+
+	// Initialize the vector of vectors
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		std::vector<vector3> temp;
+		vertices.push_back(temp);
+	}
+
+	// Vertices. Each row of vertices is its own vector
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		for (int j = 0; j < a_nSubdivisions; j++) {
+			float y = 2.0 * i / a_nSubdivisions - 1;
+			float r = sqrt(1.0f - (pow(y,2)));
+			float x = r * sin(2.0f * PI * j / a_nSubdivisions);
+			float z = r * cos (2.0 * PI * j / a_nSubdivisions);
+
+			vertices[i].push_back(vector3(x * a_fRadius, y * a_fRadius, z * a_fRadius));
+		}
+	}
+
+	// The top vertex
+	std::vector<vector3> topVert;
+	topVert.push_back(vector3(0.0f, a_fRadius, 0.0f));
+	vertices.push_back(topVert);
+
+	// Bottom
+	for (int i = 0; i < a_nSubdivisions-1; i++)
+	{
+		AddTri(vertices[0][0], vertices[1][i + 1], vertices[1][i]);
+	}
+	AddTri(vertices[0][0], vertices[1][0], vertices[1][a_nSubdivisions-1]);
+
+	// In between
+	for (int i = 1; i < a_nSubdivisions-1; i++) {
+		for (int j = 0; j < a_nSubdivisions-1; j++) {
+			AddQuad(vertices[i][j], vertices[i][j + 1], vertices[i + 1][j], vertices[i + 1][j+1]);
+		}
+		AddQuad(vertices[i][a_nSubdivisions-1], vertices[i][0], vertices[i + 1][a_nSubdivisions - 1], vertices[i + 1][0]);
+	}
+
+	// Top
+	for (int i = 0; i < a_nSubdivisions-1; i++)
+	{
+		AddTri(vertices[a_nSubdivisions][0], vertices[a_nSubdivisions-1][i], vertices[a_nSubdivisions-1][i + 1]);
+	}
+	AddTri(vertices[a_nSubdivisions][0], vertices[a_nSubdivisions - 1][a_nSubdivisions-1], vertices[a_nSubdivisions - 1][0]);
 	// -------------------------------
 
 	// Adding information about color
