@@ -2,7 +2,7 @@
 void Application::InitVariables(void)
 {
 	//Change this to your name and email
-	m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Peter Woodsum - pnw8434@rit.edu";
 
 	//Alberto needed this at this position for software recording.
 	m_pWindow->setPosition(sf::Vector2i(710, 0)); 
@@ -55,14 +55,25 @@ void Application::Display(void)
 	fTimer += m_pSystem->GetDeltaTime(uClock); //get the delta time for that timer
 
 	//calculate the current position
-	vector3 v3CurrentPos;
+	static vector3 v3CurrentPos = vector3(m_stopsList[0]); // Initialized start position
 	
-
-
-
-
 	//your code goes here
-	v3CurrentPos = vector3(0.0f, 0.0f, 0.0f);
+	static int nStop = 0; // Keep track of lerp starting stop
+	int nNextStop = nStop + 1; // Keep track of lerp ending stop
+	float fMapped = MapValue(fTimer, 0.0f, 2.0f, 0.0f, 1.0f); // Map the value of the timer to a lerp value (2 to 1)
+	if (fMapped >= 1.0f) { // Reset the lerp and increment current stop
+		nStop++;
+		fTimer = 0.0f;
+		if (nStop > 10) {
+			nStop = 0;
+		}
+	}
+	if (nNextStop > 10) { // Avoid index out of bounds error
+		nNextStop = 0;
+	}
+	v3CurrentPos = glm::lerp(m_stopsList[nStop], m_stopsList[nNextStop], fMapped); // Lerp from current to next position based on the mapped value
+
+
 	//-------------------
 	
 
