@@ -20,6 +20,10 @@ class Application
 {
 	uint m_uOrbits = 0; //number of shapes starting at 3 and increasing in sides
 	std::vector<uint> m_shapeList; //shape index for circles
+	std::vector<uint> m_sphereList; // List of spheres
+	std::vector<std::vector<vector3>> m_pathStopList; // List of stop positions for each circle
+	std::vector<uint> m_currentPathList; // List to keep track of each circles current lerp stops
+
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
 	
 private:
