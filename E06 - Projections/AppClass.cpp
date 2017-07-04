@@ -3,7 +3,7 @@ using namespace Simplex;
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	//m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Peter Woodsum - pnw8434@rit.edu";
 
 	////Alberto needed this at this position for software recording.
 	//m_pWindow->setPosition(sf::Vector2i(710, 0));
@@ -54,24 +54,50 @@ void Application::Display(void)
 	default:
 	case 1:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective();
+		m_pCamera->SetNearFar(vector2(0.01f, 50.0f));
+		m_pCamera->SetFOV(45.0f);
+		m_pCamera->SetPositionTargetAndUp(AXIS_Z * 10.0f, ZERO_V3, AXIS_Y);
 		break;
 	case 2:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective(false);
+		m_pCamera->SetPositionTargetAndUp(AXIS_Z * 10.0f, ZERO_V3, AXIS_Y);
 		break;
 	case 3:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective();
+		m_pCamera->SetNearFar(vector2(0.01f, 50.0f));
+		m_pCamera->SetFOV(45.0f);
+		m_pCamera->SetPositionTargetAndUp(AXIS_X * 30.0f, ZERO_V3, -AXIS_Z);
 		break;
 	case 4:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective();
+		m_pCamera->SetNearFar(vector2(0.01f, 50.0f));
+		m_pCamera->SetFOV(45.0f);
+		m_pCamera->SetPositionTargetAndUp(AXIS_Z * -15.0f, ZERO_V3, AXIS_Y);
 		break;
 	case 5:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective();
+		m_pCamera->SetNearFar(vector2(5.0f, 17.0f));
+		m_pCamera->SetFOV(45.0f);
+		m_pCamera->SetPositionTargetAndUp(AXIS_Z * -15.0f, ZERO_V3, AXIS_Y);
 		break;
 	case 6:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective();
+		m_pCamera->SetNearFar(vector2(0.01f, 11.0f));
+		m_pCamera->SetFOV(45.0f);
+		m_pCamera->SetPositionTargetAndUp(AXIS_Z * -15.0f, ZERO_V3, AXIS_Y);
 		break;
 	case 7:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective();
+		m_pCamera->SetNearFar(vector2(0.01f, 50.0f));
+		m_pCamera->SetFOV(45.0f);
+		m_pCamera->SetPositionTargetAndUp(AXIS_Z * 10.0f, ZERO_V3, -AXIS_Y);
 		break;
 	}
 
