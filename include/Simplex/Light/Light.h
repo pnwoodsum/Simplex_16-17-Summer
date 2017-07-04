@@ -135,5 +135,12 @@ protected:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Light>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Light*>;
 
-}
+}//namespace Simplex
+
 #endif //__LIGHT_H__
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

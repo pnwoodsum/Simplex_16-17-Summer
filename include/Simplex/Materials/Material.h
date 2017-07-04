@@ -233,5 +233,12 @@ private:
 	void Init(void);
 };
 
-}
+}//namespace Simplex
+
 #endif //_EMPTY_H
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

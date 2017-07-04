@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __TEXTUREMANAGERSINGLETON_H_
 #define __TEXTUREMANAGERSINGLETON_H_
@@ -12,6 +13,7 @@ Date: 2015/06
 namespace Simplex
 {
 
+//TextureManager Singleton
 class SimplexDLL TextureManager
 {
 	std::map<String,int> m_map;//indexer
@@ -109,5 +111,11 @@ private:
 	void Init(void); //Initialize variables
 };
 
-}
+} //namespace Simplex
+
 #endif __TEXTUREMANAGERSINGLETON_H_
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

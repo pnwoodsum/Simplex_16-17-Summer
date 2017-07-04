@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __ANIMATIONCLASS_H_
 #define __ANIMATIONCLASS_H_
@@ -11,6 +12,7 @@ Date: 2015/06
 namespace Simplex
 {
 
+//Animation class
 class SimplexDLL Animation
 {
 public:
@@ -97,5 +99,11 @@ private:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Animation>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Animation*>;
 
-}
+} //namespace Simplex
+
 #endif //__ANIMATIONCLASS_H__
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

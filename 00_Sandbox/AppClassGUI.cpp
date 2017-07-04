@@ -1,4 +1,5 @@
 #include "AppClass.h"
+using namespace Simplex;
 ImGuiObject Application::gui;
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 struct ConsoleAndLog

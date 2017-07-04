@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __STATECLASS_H_
 #define __STATECLASS_H_
@@ -11,6 +12,7 @@ Date: 2015/06
 namespace Simplex
 {
 
+//State class
 class SimplexDLL State
 {
 	String m_sName;
@@ -190,6 +192,12 @@ private:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<State>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<State*>;
 
-}
+} //namespace Simplex
 
 #endif //__STATECLASS_H__
+
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

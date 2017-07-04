@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Adapted from http://www.swiftless.com/tutorials/opengl4/1-opengl-window.html
 into a class Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 
 #ifndef __GLSystemSingleton_H_
@@ -14,6 +15,7 @@ into a class Date: 2015/06
 namespace Simplex
 {
 
+//GLSystem singleton
 class SimplexDLL GLSystem
 {
 	//--Members
@@ -112,8 +114,13 @@ private:
 	static GLSystem* m_pInstance; // Singleton
 };
 
-}
+} //namespace Simplex
 
 #include "ShaderCompiler.h"
 
 #endif /*__GLSystemSingleton_H__*/
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

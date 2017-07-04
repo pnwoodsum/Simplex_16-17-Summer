@@ -2,23 +2,10 @@
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2017/05
 ----------------------------------------------*/
-#ifndef __SFMLAPPCLASS_H_
-#define __SFMLAPPCLASS_H_
+#ifndef __APPLICATIONCLASS_H_
+#define __APPLICATIONCLASS_H_
 
-//#include <vld.h>
-
-//#define USEBASICX
-#ifdef USEBASICX
-#include "BasicX\BasicX.h"
-using namespace BasicX;
-#else
-#include "Simplex\Simplex.h"
-using namespace Simplex;
-#endif // USEBASICX
-
-#include "SFML\Window.hpp"
-#include "SFML\Graphics.hpp"
-#include "SFML\OpenGL.hpp"
+#include "Definitions.h"
 
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
@@ -27,7 +14,7 @@ class Application
 {
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
 	std::vector<vector3> m_stopsList;
-	Model* m_pModel = nullptr;
+	Simplex::Model* m_pModel = nullptr;
 private:
 	static ImGuiObject gui; //GUI object
 	
@@ -61,10 +48,10 @@ public:
 	/*
 	USAGE: Initializes the window and rendering context
 	ARGUMENTS: 
-		String a_sApplicationName -> Name of the window if blank will use project Name
-		int size -> formated size, relate to BTO_RESOLUTIONS
-		bool a_bFullscreen = false -> is the window fullscreen?
-		bool a_bBorderless = false -> is the window borderless?
+	-	String a_sApplicationName -> Name of the window if blank will use project Name
+	-	int size -> formated size, relate to BTO_RESOLUTIONS
+	-	bool a_bFullscreen = false -> is the window fullscreen?
+	-	bool a_bBorderless = false -> is the window borderless?
 	OUTPUT: ---
 	*/
 	void Init(String a_sApplicationName = "", int a_uSize = BTO_RESOLUTIONS::RES_C_1280x720_16x9_HD, 
@@ -72,11 +59,11 @@ public:
 	/*
 	USAGE: Initializes the window and rendering context
 	ARGUMENTS: 
-		String a_sApplicationName = "" -> Name of the window if blank will use project Name
-		uint a_nWidth -> Window Width
-		uint a_nHeight -> Window Height
-		bool a_bFullscreen -> is the window fullscreen?
-		bool a_bBorderless -> is the window borderless?
+	-	String a_sApplicationName = "" -> Name of the window if blank will use project Name
+	-	uint a_nWidth -> Window Width
+	-	uint a_nHeight -> Window Height
+	-	bool a_bFullscreen -> is the window fullscreen?
+	-	bool a_bBorderless -> is the window borderless?
 	OUTPUT: ---
 	*/
 	void Init(String a_sApplicationName, uint a_uWidth, uint a_uHeight, bool a_bFullscreen, bool a_bBorderless);
@@ -98,8 +85,7 @@ private:
 #pragma region Initialization / Release
 	/*
 	USAGE: Initialize the window
-	ARGUMENTS:
-	String a_sWindowName = "GLFW" -> Window name
+	ARGUMENTS: String a_sWindowName = "GLFW" -> Window name
 	OUTPUT: ---
 	*/
 	void InitWindow(String a_sWindowName = "Application");
@@ -145,20 +131,19 @@ private:
 	void Display(void);
 	/*
 	USAGE: Clears the OpenGL screen by the specified color
-	ARGUMENTS:
-	vector4 a_v4ClearColor = vector4(-1.0f) -> Color to clear the screen with
+	ARGUMENTS: vector4 a_v4ClearColor = vector4(-1.0f) -> Color to clear the screen with
 	OUTPUT: ---
 	*/
 	void ClearScreen(vector4 a_v4ClearColor = vector4(-1.0f));
 	/*
 	USAGE: Will initialize the controllers generically
-	ARGUMENTS:
+	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
 	void InitControllers(void);
 	/*
 	USAGE: Will Release the controllers
-	ARGUMENTS:
+	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
 	void ReleaseControllers(void);
@@ -180,15 +165,13 @@ private:
 	/*
 	USAGE: Process the arcball of the scene, rotating an object in the center of it	a_fSensitivity is
 	a factor of change
-	ARGUMENTS:
-	float a_fSensitivity = 0.1f -> indicates how fast the arcball is going to change
+	ARGUMENTS: float a_fSensitivity = 0.1f -> indicates how fast the arcball is going to change
 	OUTPUT: ---
 	*/
 	void ArcBall(float a_fSensitivity = 0.1f);
 	/*
 	USAGE: Manages the rotation of the camera a_fSpeed is a factor of change
-	ARGUMENTS:
-	float a_fSpeed = 0.005f
+	ARGUMENTS: float a_fSpeed = 0.005f
 	OUTPUT: ---
 	*/
 	void CameraRotation(float a_fSpeed = 0.005f);
@@ -311,18 +294,23 @@ private:
 #pragma region The Rule of Three
 	/*
 	USAGE: copy constructor, private so it does not let object copy
-	ARGUMENTS:
-	GLFWApp const& input -> object to copy (well in this case not)
+	ARGUMENTS: GLFWApp const& input -> object to copy (well in this case not)
 	OUTPUT: ---
 	*/
 	Application(Application const& input);
 	/*
-	USAGE: copy assignement, private so it does not let object copy
-	ARGUMENTS:
-	GLFWApp const& input -> object to copy (well in this case not)
+	USAGE: copy assignment, private so it does not let object copy
+	ARGUMENTS: GLFWApp const& input -> object to copy (well in this case not)
 	OUTPUT: ---
 	*/
 	Application& operator=(Application const& input);
 #pragma endregion
 };
-#endif //__SFMLAPPCLASS_H_
+
+#endif //__APPLICATIONCLASS_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

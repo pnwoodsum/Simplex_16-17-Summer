@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __SimplexGroup_H_
 #define __SimplexGroup_H_
@@ -13,7 +14,7 @@ Date: 2015/06
 namespace Simplex
 {
 
-//System Class
+//Group Class
 class SimplexDLL Group
 {
 	String m_sName = ""; //name of the group
@@ -321,6 +322,12 @@ public:
 	OUTPUT: number of meshes in this model
 	*/
 	uint GetMeshCount(void);
+	/*
+	USAGE: Asks the group for the list of vertices for all meshes
+	ARGUMENTS: ---
+	OUTPUT: list of vertices of this group
+	*/
+	std::vector<vector3> GetVertexList(int a_nFrame = 0);
 private:
 	/*
 	Method: Release
@@ -341,10 +348,11 @@ private:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Group>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Group*>;
 
-}
+} //namespace Simplex
+
+#endif //__SimplexGroup_H__
 /*
 USAGE:
 ARGUMENTS: ---
 OUTPUT: ---
 */
-#endif //__SimplexGroup_H__

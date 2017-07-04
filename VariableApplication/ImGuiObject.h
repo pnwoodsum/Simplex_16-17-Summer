@@ -10,10 +10,10 @@ Date: 2017/05
 #ifdef USINGSIMPLEX
 //"Using namespace" to use all the classes in the dll
 #include "Simplex\SimplexApplication.h"
-using namespace Simplex; //Using ReEng namespace to use all the classes in the dll
+using namespace Simplex; //Using namespace to use all the classes in the dll
 #else
 #include "BasicX\BasicXApplication.h"
-using namespace BasicX; //Using ReEng namespace to use all the classes in the dll
+using namespace BasicX; //Using namespace to use all the classes in the dll
 #endif
 
 #include "imgui\imgui.h"
@@ -43,3 +43,9 @@ struct ImGuiObject
 };
 
 #endif //__IMGUIOBJECT_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

@@ -2,8 +2,8 @@
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2017/04
 ----------------------------------------------*/
-#ifndef __BASICXENGINE_H_
-#define __BASICXENGINE_H_
+#ifndef __BASICXFRAMEWORK_H_
+#define __BASICXFRAMEWORK_H_
 
 #pragma warning( disable : 4251 )
 
@@ -51,4 +51,4 @@ namespace BasicX
 		MeshManager::ReleaseInstance();
 	}
 }
-#endif //__RENDERINGENGINE_H__
+#endif //__BASICXFRAMEWORK_H_

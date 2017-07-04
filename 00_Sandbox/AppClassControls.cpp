@@ -1,4 +1,5 @@
 #include "AppClass.h"
+using namespace Simplex;
 //Mouse
 void Application::ProcessMouseMovement(sf::Event a_event)
 {
@@ -73,6 +74,10 @@ void Application::ProcessKeyPressed(sf::Event a_event)
 	case sf::Keyboard::Space:
 		m_sound.play();
 		break;
+	case sf::Keyboard::LShift:
+	case sf::Keyboard::RShift:
+		m_bModifier = true;
+		break;
 	}
 	
 	//gui
@@ -132,6 +137,9 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 			}
 		}
 		break;
+	case sf::Keyboard::LShift:
+	case sf::Keyboard::RShift:
+		m_bModifier = false;
 	}
 
 	//gui
@@ -387,40 +395,45 @@ void Application::CameraRotation(float a_fSpeed)
 //Keyboard
 void Application::ProcessKeyboard(void)
 {
+	if (!m_bFocused)
+		return;
 	/*
 	This is used for things that are continuously happening,
 	for discreet on/off use ProcessKeyboardPressed/Released
 	*/
 #pragma region Camera Position
-	float fSpeed = 1.0f;
-	float fMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
+	bool bMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
 
-	if (fMultiplier)
-		fSpeed *= 5.0f;
+	float fMultiplier = 1.0f;
+
+	if (bMultiplier)
+		fMultiplier = 5.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_pCameraMngr->MoveForward(fSpeed);
+		m_pCameraMngr->MoveForward(m_fMovementSpeed * fMultiplier);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		m_pCameraMngr->MoveForward(-fSpeed);
+		m_pCameraMngr->MoveForward(-m_fMovementSpeed * fMultiplier);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		m_pCameraMngr->MoveSideways(-fSpeed);
+		m_pCameraMngr->MoveSideways(-m_fMovementSpeed * fMultiplier);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		m_pCameraMngr->MoveSideways(fSpeed);
+		m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		m_pCameraMngr->MoveVertical(-fSpeed);
+		m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		m_pCameraMngr->MoveVertical(fSpeed);
+		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
 #pragma endregion
 }
 //Joystick
 void Application::ProcessJoystick(void)
 {
+	if (!m_bFocused)
+		return;
 	/*
 	This is used for things that are continuously happening,
 	for discreet on/off use ProcessJoystickPressed/Released

@@ -488,7 +488,7 @@ void Mesh::AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopL
 	//C
 	//| \
 	//A--B
-	//This will make the triang A->B->C 
+	//This will make the triangle A->B->C 
 	AddVertexPosition(a_vBottomLeft);
 	AddVertexPosition(a_vBottomRight);
 	AddVertexPosition(a_vTopLeft);
@@ -502,7 +502,7 @@ void Mesh::AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTop
 	//C--D
 	//|  |
 	//A--B
-	//This will make the triang A->B->C and then the triang C->B->D
+	//This will make the triangle A->B->C and then the triangle C->B->D
 	AddVertexPosition(a_vBottomLeft);
 	AddVertexPosition(a_vBottomRight);
 	AddVertexPosition(a_vTopLeft);
@@ -772,24 +772,25 @@ void Mesh::RenderWire(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixAr
 	uint nSections = a_nInstances / 250;
 	uint nRemainders = a_nInstances - (250 * nSections);
 	uint nInstances = a_nInstances;
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_POLYGON_OFFSET_LINE);
+	glPolygonOffset(-1.f, -1.f);
 	for (uint n = 0; n < nSections; n++)
 	{
 		glUniformMatrix4fv(m4ToWorld, 250, GL_FALSE, &a_fMatrixArray[n * 250 * 16]);
 		//Draw
-		glUseProgram(m_pShaderMngr->GetShaderID("Wireframe"));
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glDrawArraysInstanced(GL_LINES, 0, m_uVertexCount, 250);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, m_uVertexCount, 250);
 		m_uRenderCalls++;
 	}
 
 	glUniformMatrix4fv(m4ToWorld, nRemainders, GL_FALSE, &a_fMatrixArray[nSections * 250 * 16]);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawArraysInstanced(GL_TRIANGLES, 0, m_uVertexCount, nRemainders);
 	m_uRenderCalls++;
 
-	glBindVertexArray(0);
-
+	glDisable(GL_POLYGON_OFFSET_LINE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//Set rendering mode back to fill
+
+	glBindVertexArray(0);
 }
 void Mesh::RenderSolid(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances, vector3 a_v3CameraPosition)
 {

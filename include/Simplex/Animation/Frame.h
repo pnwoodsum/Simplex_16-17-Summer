@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __FRAMECLASS_H_
 #define __FRAMECLASS_H_
@@ -10,6 +11,7 @@ Date: 2015/06
 namespace Simplex
 {
 
+//Frame class
 class SimplexDLL Frame
 {
 	bool m_bKeyframe = true;
@@ -262,5 +264,11 @@ public:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Frame>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Frame*>;
 
-}
+} //namespace Simplex
+
 #endif //__ANIMATIONFRAMECLASS_H_
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

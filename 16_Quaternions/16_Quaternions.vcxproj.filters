@@ -77,6 +77,9 @@
     <ClInclude Include="MyMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\res\BTO.rc">

@@ -4,12 +4,12 @@ void Application::InitVariables(void)
 	//Change this to your name and email
 	m_sProgrammer = "Peter Woodsum - pnw8434@rit.edu";
 
-	//Alberto needed this at this position for software recording.
+	////Alberto needed this at this position for software recording.
 	m_pWindow->setPosition(sf::Vector2i(710, 0));
 
 	//Set the position and target of the camera
 	//(I'm at [0,0,10], looking at [0,0,0] and up is the positive Y axis)
-	m_pCameraMngr->SetPositionTargetAndView(AXIS_Z * 10.0f, ZERO_V3, AXIS_Y);
+	m_pCameraMngr->SetPositionTargetAndUp(AXIS_Z * 10.0f, ZERO_V3, AXIS_Y);
 
 	//Allocate the memory for the shapes
 	m_pCube = new MyMesh();
@@ -25,7 +25,7 @@ void Application::InitVariables(void)
 	m_pTorus = new MyMesh();
 	m_pTorus->GenerateTorus(0.5f, 0.30f, 7, 7, C_VIOLET);
 
-	//Make MyMesh object
+	//Make Mesh object
 	m_pMesh = new MyMesh();
 	int primitive = 0;
 	switch (primitive)

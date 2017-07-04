@@ -1,5 +1,5 @@
-#include "RE\system\ExampleSingleton.h"
-using namespace ReEng;
+#include "ExampleSingleton.h"
+using namespace Simplex;
 //  ExampleSingleton
 ExampleSingleton* ExampleSingleton::m_pInstance = nullptr;
 void ExampleSingleton::Init(void)

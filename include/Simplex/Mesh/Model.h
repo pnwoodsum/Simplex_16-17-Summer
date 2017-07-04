@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2017/05
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __SIMPLEXMODEL_H_
 #define __SIMPLEXMODEL_H_
@@ -22,7 +23,7 @@ Date: 2017/05
 namespace Simplex
 {
 
-//System Class
+//Model Class
 class SimplexDLL Model
 {
 	String m_sFileName = ""; //Name of the file that made this model
@@ -48,11 +49,11 @@ class SimplexDLL Model
 	uint m_uStateNext = 0;
 
 	ShaderManager* m_pShaderMngr = nullptr;	//Shader Manager
-	MaterialManager* m_pMatMngr = nullptr;		//Material Manager
-	LightManager* m_pLightMngr = nullptr;		//Light Manager
+	MaterialManager* m_pMatMngr = nullptr;	//Material Manager
+	LightManager* m_pLightMngr = nullptr;	//Light Manager
 	CameraManager* m_pCameraMngr = nullptr;	//Camera Manager
-	MeshManager* m_pMeshMngr = nullptr;			//Mesh Manager
-	SystemSingleton* m_pSystem = nullptr;			//System pointer
+	MeshManager* m_pMeshMngr = nullptr;		//Mesh Manager
+	SystemSingleton* m_pSystem = nullptr;	//System pointer
 
 	static uint m_uIndexer; //counter for unique identifiers
 	static std::map<String, Model*> m_modelMap; //list of all the names of created models
@@ -280,14 +281,25 @@ public:
 	*/
 	void ChangeMaterialOfGroup(uint a_uMaterialIndex, String a_sGroup = "ALL");
 	/*
-	USAGE: Will change the render options for the ones specified for the mesh indicated by index
+	USAGE: Will change the render options for the ones specified for the group specified by name
+		for its mesh indicated by index
+	ARGUMENTS:
+	MeshOptions a_MeshOptions -> options to change | -1 will change it to all meshes in the group
+	String a_sGroupName -> name of the group to change
+	int a_nMeshIndex = -1 -> mesh in the list to apply changes to
+	OUTPUT: ---
+	*/
+	void ChangeMeshOptions(MeshOptions a_MeshOptions, String a_sGroupName, int a_nMeshIndex = -1);
+	/*
+	USAGE: Will change the render options for the ones specified for the group specified
+		for its mesh indicated by index
 	ARGUMENTS:
 	MeshOptions a_MeshOptions -> options to change | -1 will change it to all meshes in the group
 	Group* a_pGroup = nullptr -> Group to change | nullptr will change it to all groups in the model
 	int a_nMeshIndex = -1 -> mesh in the list to apply changes to
 	OUTPUT: ---
 	*/
-	void ChangeMeshOptions(MeshOptions a_MeshOptions, int a_nMeshIndex = -1, Group* a_pGroup = nullptr);
+	void ChangeMeshOptions(MeshOptions a_MeshOptions, Group* a_pGroup = nullptr, int a_nMeshIndex = -1);
 	/*
 	USAGE: Will create new unique materials for each group that are a duplicate of the current 
 	material, for each mesh in a group a new unique material will be created.
@@ -388,6 +400,12 @@ public:
 	OUTPUT: ---
 	*/
 	void Play(void);
+	/*
+	USAGE: Asks the group for the list of vertices for all meshes
+	ARGUMENTS: ---
+	OUTPUT: list of vertices of this group
+	*/
+	std::vector<vector3> GetVertexList(uint a_nFrame = 0);
 private:
 	/*
 	USAGE: Will compose the groups of the model, getting the frames 
@@ -461,10 +479,12 @@ private:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Model>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Model*>;
 
-}
-/*
-USAGE:
-ARGUMENTS: ---
-OUTPUT: ---
-*/
+} //namespace Simplex
+
 #endif //__SimplexModel_H__
+
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

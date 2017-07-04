@@ -7,4 +7,11 @@ Date: 2017/05
 
 #include <iostream>
 #include "AppClass.h"
+
 #endif //__MAIN_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

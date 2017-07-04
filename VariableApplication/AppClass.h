@@ -143,9 +143,11 @@ public:
 	*/
 	static void RenderDrawLists(ImDrawData* draw_data);
 };
+
+#endif //__APPLICATION_H_
+
 /*
 USAGE:
 ARGUMENTS: ---
 OUTPUT: ---
 */
-#endif //__APPLICATION_H_

@@ -142,7 +142,10 @@ void MyMesh::Render(matrix4 a_mProjection, matrix4 a_mView, matrix4 a_mModel)
 	//Wire
 	glUniform3f(wire, 1.0f, 0.0f, 1.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_POLYGON_OFFSET_LINE);
+	glPolygonOffset(-1.f, -1.f);
 	glDrawArrays(GL_TRIANGLES, 0, m_uVertexCount);
+	glDisable(GL_POLYGON_OFFSET_LINE);
 
 	glBindVertexArray(0);// Unbind VAO so it does not get in the way of other objects
 }
@@ -151,7 +154,7 @@ void MyMesh::AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTo
 	//C
 	//| \
 		//A--B
-//This will make the triang A->B->C 
+//This will make the triangle A->B->C 
 	AddVertexPosition(a_vBottomLeft);
 	AddVertexPosition(a_vBottomRight);
 	AddVertexPosition(a_vTopLeft);
@@ -161,7 +164,7 @@ void MyMesh::AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vT
 	//C--D
 	//|  |
 	//A--B
-	//This will make the triang A->B->C and then the triang C->B->D
+	//This will make the triangle A->B->C and then the triangle C->B->D
 	AddVertexPosition(a_vBottomLeft);
 	AddVertexPosition(a_vBottomRight);
 	AddVertexPosition(a_vTopLeft);

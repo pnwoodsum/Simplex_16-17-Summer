@@ -9,3 +9,9 @@ This project was generated in 2013
 #include "GLFW\glfw3.h"
 
 #endif //_MAIN_H
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __FOLDERSINGLETON_H_
 #define __FOLDERSINGLETON_H_
@@ -13,7 +14,7 @@ Date: 2015/06
 namespace Simplex
 {
 
-typedef std::string String;
+//Folder Class
 class SimplexDLL Folder
 {
 	String m_sRoot = "";
@@ -254,6 +255,11 @@ private:
 	String GetRealProgramPath(void);
 };
 
-}
+} //namespace Simplex
 
 #endif //__FOLDERSINGLETON_H_
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

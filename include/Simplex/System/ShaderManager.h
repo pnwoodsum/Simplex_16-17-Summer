@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __SHADERMANAGERSINGLETON_H_
 #define __SHADERMANAGERSINGLETON_H_
@@ -12,7 +13,7 @@ Date: 2015/06
 namespace Simplex
 {
 
-//System Class
+//ShaderManager singleton
 class SimplexDLL ShaderManager
 {
 	uint m_uShaderCount = 0; //Number of shaders
@@ -133,5 +134,11 @@ private:
 	void Init(void);
 };
 
-}
+} //namespace Simplex
+
 #endif //__SHADERMANAGERSINGLETON_H_
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

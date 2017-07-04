@@ -10,6 +10,7 @@ Date: 2017/06
 namespace Simplex
 {
 
+//FileReader class
 class SimplexDLL FileReader
 {
 	SystemSingleton* m_pSystem = nullptr; //System pointer
@@ -259,5 +260,11 @@ private:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<FileReader>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<FileReader*>;
 
-}
+} //namespace Simplex
+
 #endif //_EMPTY_H
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

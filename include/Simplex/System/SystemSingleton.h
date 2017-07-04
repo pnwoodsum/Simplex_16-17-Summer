@@ -11,7 +11,7 @@ Date: 2017/06
 namespace Simplex
 {
 
-//System Class
+//System singleton
 class SimplexDLL SystemSingleton
 {
 	static SystemSingleton* m_pInstance; // Singleton
@@ -70,8 +70,7 @@ public:
 	bool IsWindowBorderless(void);
 	/*
 	USAGE: Will set the window to fullscreen mode in the desired resolution
-	ARGUMENTS:
-		BTO_RESOLUTIONS a_Resolution = BTO_RESOLUTIONS::HD_1280X720 -> resolution of the screen
+	ARGUMENTS: BTO_RESOLUTIONS a_Resolution = BTO_RESOLUTIONS::HD_1280X720 -> resolution of the screen
 	OUTPUT: ---
 	*/
 	void SetWindowFullscreen(bool a_bFullScreen);
@@ -292,11 +291,12 @@ private:
 	void Init(void);
 };
 
-}
+} //namespace Simplex
 #include "Simplex\System\GLSystem.h"
+
+#endif //__SIMPLEXSYSTEM_H_
 /*
-USAGE: 
+USAGE:
 ARGUMENTS: ---
 OUTPUT: ---
 */
-#endif //__SIMPLEXSYSTEM_H_

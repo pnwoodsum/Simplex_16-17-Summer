@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	SDL_GetWindowSize(window, &width, &height);
 	MeshManager* pMeshMngr = MeshManager::GetInstance();
 	pMeshMngr->SetRenderTarget(0, 0, 0, width, height);
-	Model* pModel = new Model();
+	Model* pModel = new Simplex::Model();
 	pModel->Load("Lego\\Unikitty.BTO");
 
 	// Dark blue background

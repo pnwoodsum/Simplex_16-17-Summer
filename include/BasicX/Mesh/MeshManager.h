@@ -218,7 +218,7 @@ namespace BasicX
 		*/
 		void AddSkyboxToRenderList(String a_sFileName = "Skybox.png");
 		/*
-		USAGE: Finds the specified mesh and speficies a tranform to display
+		USAGE: Finds the specified mesh and speficies a transform to display
 		ARGUMENTS:
 		uint a_nIndex -> index of the mesh to apply transform to
 		matrix4 a_m4Transform -> transform to apply
@@ -227,7 +227,7 @@ namespace BasicX
 		*/
 		void AddMeshToRenderList(uint a_nIndex, matrix4 a_m4Transform, int a_Render = RENDER_SOLID);
 		/*
-		USAGE: Applies a tranform to display to the specified mesh by name, the mesh will be
+		USAGE: Applies a transform to display to the specified mesh by name, the mesh will be
 		lookout	for in the map of meshes, using the mesh index if know will result in faster
 		additions
 		ARGUMENTS:
@@ -238,7 +238,7 @@ namespace BasicX
 		*/
 		void AddMeshToRenderList(String a_sMeshName, matrix4 a_m4Transform, int a_Render = RENDER_SOLID);
 		/*
-		USAGE: Applies a tranform to display to the specified mesh, the mesh will be lookout
+		USAGE: Applies a transform to display to the specified mesh, the mesh will be lookout
 		for in the map of meshes, using the mesh index if know will result in faster additions
 		ARGUMENTS:
 		Mesh* a_pMesh -> mesh to apply transform to

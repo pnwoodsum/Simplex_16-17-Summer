@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __LIGHTMANAGERSINGLETON_H_
 #define __LIGHTMANAGERSINGLETON_H_
@@ -12,7 +13,7 @@ Date: 2015/06
 namespace Simplex
 {
 
-//System Class
+//LightManager singleton
 class SimplexDLL LightManager
 {
 	//Private Fields
@@ -135,5 +136,11 @@ private:
 	void Init(void);
 };
 
-}
+} //namespace Simplex
+
 #endif //__LIGHTMANAGERSINGLETON_H__
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

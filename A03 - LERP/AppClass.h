@@ -2,8 +2,8 @@
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2017/05
 ----------------------------------------------*/
-#ifndef __SFMLAPPCLASS_H_
-#define __SFMLAPPCLASS_H_
+#ifndef __APPLICATIONCLASS_H_
+#define __APPLICATIONCLASS_H_
 
 //#include <vld.h>
 
@@ -44,7 +44,7 @@ private:
 	sf::Window* m_pWindow = nullptr; //SFML window
 	SystemSingleton* m_pSystem = nullptr; //Singleton of the system
 	LightManager* m_pLightMngr = nullptr; //Light Manager of the system
-	MeshManager* m_pMeshMngr = nullptr; //Mesh Manager
+	MeshManager* m_pMeshMngr = nullptr; //MyMesh Manager
 	CameraManager* m_pCameraMngr = nullptr; //Singleton for the camera manager
 	ControllerInput* m_pController[8]; //Controller
 	uint m_uActCont = 0; //Active Controller of the Application
@@ -316,7 +316,7 @@ private:
 	*/
 	Application(Application const& input);
 	/*
-	USAGE: copy assignement, private so it does not let object copy
+	USAGE: copy assignment, private so it does not let object copy
 	ARGUMENTS:
 	GLFWApp const& input -> object to copy (well in this case not)
 	OUTPUT: ---
@@ -324,4 +324,11 @@ private:
 	Application& operator=(Application const& input);
 #pragma endregion
 };
-#endif //__SFMLAPPCLASS_H_
+
+#endif //__APPLICATIONCLASS_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

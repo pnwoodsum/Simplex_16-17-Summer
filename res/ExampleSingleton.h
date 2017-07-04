@@ -1,114 +1,106 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
-Date: 2015/06
+Date: 2017/06
 ----------------------------------------------*/
-#ifndef __ExampleSingleton_H_
-#define __ExampleSingleton_H_
+#ifndef __EXAMPLESINGLETON_H_
+#define __EXAMPLESINGLETON_H_
 
-#include "RE\system\SystemSingleton.h"
+#include "Simplex\Simplex.h"
 
-namespace ReEng
+namespace Simplex
 {
 
 //System Class
-class ReEngDLL ExampleSingleton
+class ExampleSingleton
 {
 	int m_nData = 0; //number of elements in the list
 	static ExampleSingleton* m_pInstance; // Singleton pointer
 	std::vector<int> m_lData; //list of elements
 public:
 	/*
-	Method:
-	Usage:
-	Arguments:
-	Output:
+	Usage: Gets the singleton pointer
+	Arguments: ---
+	Output: singleton pointer
 	*/
 	static ExampleSingleton* GetInstance();
 	/*
-	Method:
-	Usage:
+	Usage: Releases the content of the singleton
 	Arguments: ---
 	Output: ---
 	*/
 	static void ReleaseInstance(void);
-
 	/*
-	Method:
-	Usage:
+	Usage: Gets data member
 	Arguments: ---
-	Output:
+	Output: data member
 	*/
 	int GetData(void);
 	/*
-	Method:
-	Usage:
-	Arguments:
+	Usage: sets data member
+	Arguments: int a_nData = 1 -> data to set
 	Output: ---
 	*/
 	void SetData(int a_nData = 1);
 	/* Property GetData/SetData */
 	//__declspec(property(get = GetData, put = SetData)) int Data;
-
 	/*
-	Method:
-	Usage:
-	Arguments:
+	Usage: Sets data on the vector
+	Arguments: int a_nData -> data to set
 	Output: ---
 	*/
 	void SetDataOnVector(int a_nData);
 	/*
-	Method:
-	Usage:
-	Arguments:
-	Output:
+	Usage: Gets data from the vector at the specified position
+	Arguments: int a_nIndex -> entry
+	Output: entry
 	*/
 	int& GetDataOnVector(int a_nIndex);
 
 private:
 	/*
-	Method:
-	Usage:
+	Usage: constructor
 	Arguments: ---
-	Output:
+	Output: class object instance
 	*/
 	ExampleSingleton(void);
 	/*
-	Method:
-	Usage:
-	Arguments:
-	Output:
+	Usage: copy constructor
+	Arguments: class object to copy
+	Output: class object instance
 	*/
 	ExampleSingleton(ExampleSingleton const& other);
 	/*
-	Method:
-	Usage:
-	Arguments:
-	Output:
+	Usage: copy assignment operator
+	Arguments: class object to copy
+	Output: ---
 	*/
 	ExampleSingleton& operator=(ExampleSingleton const& other);
 	/*
-	Method:
-	Usage:
+	Usage: destructor
 	Arguments: ---
 	Output: ---
 	*/
 	~ExampleSingleton(void);
 	/*
-	Method:
-	Usage:
+	Usage: releases the allocated member pointers
 	Arguments: ---
 	Output: ---
 	*/
 	void Release(void);
 	/*
-	Method:
-	Usage:
+	Usage: initializes the singleton
 	Arguments: ---
 	Output: ---
 	*/
 	void Init(void);
-};
+};//class
 
-}
+} //namespace Simplex
 
-#endif //__EXAMPLECLASS_H__
+#endif //__EXAMPLESINGLETON_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

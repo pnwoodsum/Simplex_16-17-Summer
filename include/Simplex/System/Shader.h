@@ -98,6 +98,12 @@ protected:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Shader>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Shader*>;
 
-}
+} //namespace Simplex
 
 #endif //__SHADERCLASS_H__
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

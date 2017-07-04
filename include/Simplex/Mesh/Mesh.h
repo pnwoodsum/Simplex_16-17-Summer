@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@rit.edu)
 Date: 2017/05
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __MESHSIMPLEX_H_
 #define __MESHSIMPLEX_H_
@@ -12,18 +13,20 @@ Date: 2017/05
 
 namespace Simplex
 {
-	/*
-	A Mesh is the most basic container of a model or mesh.
-	It contains the information about the material and the vertex cloud that forms it
-	*/
+/*
+A Mesh is the most basic container of a model or mesh.
+It contains the information about the material and the vertex cloud that forms it
+*/
 
-//System Class
+//Mesh Class
 class SimplexDLL Mesh
 {
 protected:
 	String m_sName = "NULL"; //Identifier of the Mesh
 
 	bool m_bBinded = false; //Binded flag
+
+	bool m_bLineObject = false; //Is this object formated to draw lines?
 
 	uint m_uMaterialIndex = 0; //Material index of this mesh
 	uint m_uVertexCount = 0; //Number of vertices in this Mesh
@@ -65,6 +68,9 @@ protected:
 	OUTPUT: ---
 	*/
 	void Release(void);
+	
+#pragma endregion
+#pragma region Mesh Initialization
 	/*
 	USAGE: Completes the information missing to create the mesh
 	ARGUMENTS: ---
@@ -77,58 +83,6 @@ protected:
 	OUTPUT: ---
 	*/
 	void DisconnectOpenGL3X(void);
-#pragma endregion
-#pragma region Mesh Initialization
-	/*
-	USAGE: Adds a quad to the list points in the buffer to be compiled
-	//C--D
-	//|  |
-	//A--B
-	//Will make the triang A->B->C and then the triang C->B->D
-	ARGUMENTS:
-		vector3 a_vBottomLeft (A)
-		vector3 a_vBottomRight (B)
-		vector3 a_vTopLeft (C)
-		vector3 a_vTopRight (D)
-	OUTPUT: ---
-	*/
-	void AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft, vector3 a_vTopRight);
-	/*
-	USAGE: Adds a tri to the list points in the buffer to be compiled
-	//C
-	//| \
-	//A--B
-	//This will make the triang A->B->C
-	ARGUMENTS:
-		vector3 a_vBottomLeft (A)
-		vector3 a_vBottomRight (B)
-		vector3 a_vTopLeft (C)
-	OUTPUT: ---
-	*/
-	void AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft);
-	/*
-	USAGE: Renders the mesh a_nInstances number of times on the specified positions by the a_fMatrixArray and by the
-	provided camera view and projection
-	ARGUMENTS:
-	matrix4 a_mProjection -> Projection matrix
-	matrix4 a_mView -> View matrix
-	float* a_fMatrixArray -> Array of matrices that represent positions
-	int a_nInstances -> Number of instances to display
-	OUTPUT: ---
-	*/
-	virtual void RenderWire(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances);
-	/*
-	USAGE: Renders the mesh a_nInstances number of times on the specified positions by the a_fMatrixArray and by the
-	provided camera view and projection
-	ARGUMENTS:
-	matrix4 a_mProjection -> Projection matrix
-	matrix4 a_mView -> View matrix
-	float* a_fMatrixArray -> Array of matrices that represent positions
-	int a_nInstances -> Number of instances to display
-	vector3 a_v3CameraPosition -> Position of the camera in world space
-	OUTPUT: ---
-	*/
-	virtual void RenderSolid(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances, vector3 a_v3CameraPosition);
 #pragma endregion
 public:
 	/*
@@ -194,31 +148,119 @@ public:
 	USAGE: Renders the mesh a_nInstances number of times on the specified positions by the a_fMatrixArray and by the
 		provided camera view and projection
 	ARGUMENTS:
-		matrix4 a_mProjection -> Projection matrix
-		matrix4 a_mView -> View matrix
-		float* a_fMatrixArray -> Array of matrices that represent positions
-		int a_nInstances -> Number of instances to display
-		vector3 a_v3CameraPosition -> Position of the camera in world space
-		int a_RenderOption = BTO_RENDER::SOLID -> Render options SOLID | WIRE
+	-	matrix4 a_mProjection -> Projection matrix
+	-	matrix4 a_mView -> View matrix
+	-	float* a_fMatrixArray -> Array of matrices that represent positions
+	-	int a_nInstances -> Number of instances to display
+	-	vector3 a_v3CameraPosition -> Position of the camera in world space
+	-	int a_RenderOption = BTO_RENDER::SOLID -> Render options SOLID | WIRE
 	OUTPUT: ---
 	*/
-	virtual void Render(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances,
+	void Render(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances,
 						vector3 a_v3CameraPosition = vector3(0), int a_RenderOption = BTO_RENDER::RENDER_SOLID);
 	/*
 	USAGE: Renders the mesh a_nInstances number of times on the specified positions by the a_fMatrixArray and by the
 	provided camera view and projection
 	ARGUMENTS:
-	vector3 a_v3CameraPosition -> Position of the camera in world space
-	matrix4 a_mProjection -> Projection matrix
-	matrix4 a_mView -> View matrix
-	matrix4 a_mToWorld -> to world matrix
-	vector3 a_v3CameraPosition -> Position of the camera in world space
+	-	vector3 a_v3CameraPosition -> Position of the camera in world space
+	-	matrix4 a_mProjection -> Projection matrix
+	-	matrix4 a_mView -> View matrix
+	-	matrix4 a_mToWorld -> to world matrix
+	-	vector3 a_v3CameraPosition -> Position of the camera in world space
 	int a_RenderOption = BTO_RENDER::SOLID -> Render options SOLID | WIRE
 	OUTPUT: ---
 	*/
-	virtual void Render(matrix4 a_mProjection, matrix4 a_mView, matrix4 a_mWorld, 
+	void Render(matrix4 a_mProjection, matrix4 a_mView, matrix4 a_mWorld, 
 						vector3 a_v3CameraPosition = vector3(0), int a_RenderOption = BTO_RENDER::RENDER_SOLID);
+	/*
+	USAGE: Renders the mesh a_nInstances number of times on the specified positions by the a_fMatrixArray and by the
+	provided camera view and projection
+	ARGUMENTS:
+	-	matrix4 a_mProjection -> Projection matrix
+	-	matrix4 a_mView -> View matrix
+	-	float* a_fMatrixArray -> Array of matrices that represent positions
+	-	int a_nInstances -> Number of instances to display
+	OUTPUT: ---
+	*/
+	void RenderWire(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances);
+	/*
+	USAGE: Renders the mesh a_nInstances number of times on the specified positions by the a_fMatrixArray and by the
+	provided camera view and projection
+	ARGUMENTS:
+	-	matrix4 a_mProjection -> Projection matrix
+	-	matrix4 a_mView -> View matrix
+	-	float* a_fMatrixArray -> Array of matrices that represent positions
+	-	int a_nInstances -> Number of instances to display
+	-	vector3 a_v3CameraPosition -> Position of the camera in world space
+	OUTPUT: ---
+	*/
+	void RenderSolid(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances, vector3 a_v3CameraPosition);
+	/*
+	USAGE: Will render the line mesh using line mode, the object needs to be 
+	marked as a line object otherwise the method will return
+	ARGUMENTS:
+	-	matrix4 a_mProjection -> Projection matrix
+	-	matrix4 a_mView -> View matrix
+	-	float* a_fMatrixArray -> Array of matrices that represent positions
+	-	int a_nInstances -> Number of instances to display
+	OUTPUT: ---
+	*/
+	void RenderLines(matrix4 a_mProjection, matrix4 a_mView, float* a_fMatrixArray, int a_nInstances);
 #pragma region Add Information to Mesh
+	/*
+	USAGE: Adds a quad to the list points in the buffer to be compiled
+	//C--D
+	//|  |
+	//A--B
+	//Will make the triangle A->B->C and then the triangle C->B->D
+	ARGUMENTS:
+	-	vector3 a_vBottomLeft (A)
+	-	vector3 a_vBottomRight (B)
+	-	vector3 a_vTopLeft (C)
+	-	vector3 a_vTopRight (D)
+	OUTPUT: ---
+	*/
+	void AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft, vector3 a_vTopRight);
+	/*
+	USAGE: Adds a tri to the list points in the buffer to be compiled
+	//C
+	//| \
+	//A--B
+	//This will make the triangle A->B->C
+	ARGUMENTS:
+	-	vector3 a_vBottomLeft (A)
+	-	vector3 a_vBottomRight (B)
+	-	vector3 a_vTopLeft (C)
+	OUTPUT: ---
+	*/
+	void AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft);
+	/*
+	USAGE: Adds a quad to the list points in the buffer to be compiled
+	//C--D
+	//|  |
+	//A--B
+	//Will make the triangle A->B->C and then the triangle C->B->D
+	ARGUMENTS:
+	-	vector3 a_vBottomLeft (A)
+	-	vector3 a_vBottomRight (B)
+	-	vector3 a_vTopLeft (C)
+	-	vector3 a_vTopRight (D)
+	OUTPUT: ---
+	*/
+	void AddWireQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft, vector3 a_vTopRight);
+	/*
+	USAGE: Adds a tri to the list points in the buffer to be compiled
+	//C
+	//| \
+	//A--B
+	//This will make the triangle A->B->C
+	ARGUMENTS:
+	-	vector3 a_vBottomLeft (A)
+	-	vector3 a_vBottomRight (B)
+	-	vector3 a_vTopLeft (C)
+	OUTPUT: ---
+	*/
+	void AddWireTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft);
 	/*
 	USAGE: Sets the color of the wireframe
 	ARGUMENTS: vector3 a_v3Color -> color to assign
@@ -234,103 +276,92 @@ public:
 	/*
 	USAGE: Set the shader to the newly loaded shader
 	ARGUMENTS:
-	- String a_sVertexShaderName -> file name
-	- String a_sFragmentShaderName -> file name
-	- String a_sShaderName -> name of the shader
-	- vector3 a_v3Tint = DEFAULT_V3NEG -> tint color
+	-	String a_sVertexShaderName -> file name
+	-	String a_sFragmentShaderName -> file name
+	-	String a_sShaderName -> name of the shader
+	-	vector3 a_v3Tint = DEFAULT_V3NEG -> tint color
 	OUTPUT: ---
 	*/
 	void SetShaderProgram(String a_sVertexShaderName, String a_sFragmentShaderName, String a_sShaderName);
 	/*
 	USAGE: Sets the shader of the mesh to a loaded shader
 	ARGUMENTS:
-	- String a_sShaderName = "Original" -> Name of the previously loaded shader
-	- vector3 a_v3Tint = DEFAULT_V3NEG -> color tint
+	-	String a_sShaderName = "Original" -> Name of the previously loaded shader
+	-	vector3 a_v3Tint = DEFAULT_V3NEG -> color tint
 	OUTPUT: ---
 	*/
 	void SetShaderProgram(String a_sShaderName = "Simplex");
 	/*
 	USAGE: Adds a new point to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexPosition(vector3 a_v3Input);
 	/*
 	USAGE: Adds a new lists of points to the vector of vertices
 	ARGUMENTS:
-	- std::vector<vector3> a_v3Input -> list of vertices
-	- matrix4 a_m4ModelToWorld = IDENTITY_M4 -> vertices modifiers
+	-	std::vector<vector3> a_v3Input -> list of vertices
+	-	matrix4 a_m4ModelToWorld = IDENTITY_M4 -> vertices modifiers
 	OUTPUT: ---
 	*/
 	void AddVertexPositionList(std::vector<vector3> a_lInput, matrix4 a_m4ModelToWorld = IDENTITY_M4);
 	/*
 	USAGE: Adds a new color to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexColor(vector3 a_v3Input);
 	/*
 	USAGE: Adds a new color list to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexColorList(std::vector<vector3> a_lInput);
 	/*
 	USAGE: Adds a new normal to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexNormal(vector3 a_v3Input);
 	/*
 	USAGE: Adds a new normal list to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexNormalList(std::vector<vector3> a_v3Input);
 	/*
 	USAGE: Adds a new binormal to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexBinormal(vector3 a_v3Input);
 	/*
 	USAGE: Adds a new binormal list to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexBinormalList(std::vector<vector3> a_v3Input);
 	/*
 	USAGE: Adds a new tangent to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexTangent(vector3 a_v3Input);
 	/*
 	USAGE: Adds a new tangent list to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexTangentList(std::vector<vector3> a_v3Input);
 	/*
 	USAGE: Adds a new uv to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexUV(vector3 a_v3Input);
 	/*
 	USAGE: Adds a new uv to the vector of vertices
-	ARGUMENTS:
-	- vector3 a_v3Input -> vector input
+	ARGUMENTS: vector3 a_v3Input -> vector input
 	OUTPUT: ---
 	*/
 	void AddVertexUVList(std::vector<vector3> a_v3Input);
@@ -356,25 +387,23 @@ public:
 	int GetMaterialIndex(void);
 	/*
 	USAGE: Sets the material of the mesh by index of the Material manager
-	ARGUMENTS:
-		int a_nMaterialIndex -> Index of the previously loaded material
+	ARGUMENTS: int a_nMaterialIndex -> Index of the previously loaded material
 	OUTPUT: ---
 	*/
 	void SetMaterial(int a_nMaterialIndex);
 	/*
 	USAGE: Sets the material of the mesh by name
-	ARGUMENTS:
-		String a_sMaterialName -> Name of the previously loaded material
+	ARGUMENTS: String a_sMaterialName -> Name of the previously loaded material
 	OUTPUT: ---
 	*/
 	void SetMaterial(String a_sMaterialName);
 	/*
 	USAGE: Sets the material of the mesh by name
 	ARGUMENTS:
-		String a_sMaterialName -> Name of the previously loaded material
-		String a_sDiffuseMapName -> Filename to be used as Diffuse Map
-		String a_sNormalMapName -> Filename to be used as Normal Map 
-		String a_sSpecularName -> Filename to be used as Specular Map
+	-	String a_sMaterialName -> Name of the previously loaded material
+	-	String a_sDiffuseMapName -> Filename to be used as Diffuse Map
+	-	String a_sNormalMapName -> Filename to be used as Normal Map 
+	-	String a_sSpecularName -> Filename to be used as Specular Map
 	OUTPUT: ---
 	*/
 	void SetMaterial(String a_sMaterialName, String a_sDiffuseMapName, String a_sNormalMapName = "", String a_sSpecularName = "");
@@ -398,8 +427,7 @@ public:
 	void SetTint(vector3 a_v3Tint);
 	/*
 	USAGE: Set the list of vertices to the incoming one
-	ARGUMENTS:
-	- std::vector<vector3> a_lVertex -> list of vertices
+	ARGUMENTS: std::vector<vector3> a_lVertex -> list of vertices
 	OUTPUT: ---
 	*/
 	void SetVertexList(std::vector<vector3> a_lVertex);
@@ -411,8 +439,7 @@ public:
 	std::vector<vector3> GetVertexList(void);
 	/*
 	USAGE: Set the list of colors to the incoming one
-	ARGUMENTS:
-	- std::vector<vector3> a_lColor -> list of colors
+	ARGUMENTS: std::vector<vector3> a_lColor -> list of colors
 	OUTPUT: ---
 	*/
 	void SetColorList(std::vector<vector3> a_lColor);
@@ -424,8 +451,7 @@ public:
 	std::vector<vector3> GetColorList(void);
 	/*
 	USAGE: Set the list of UVs to the incoming one
-	ARGUMENTS:
-	- std::vector<vector3> a_lUV -> list of UV
+	ARGUMENTS: std::vector<vector3> a_lUV -> list of UV
 	OUTPUT: ---
 	*/
 	void SetUVList(std::vector<vector3> a_lUV);
@@ -437,8 +463,7 @@ public:
 	std::vector<vector3> GetUVList(void);
 	/*
 	USAGE: Set the list of normals to the incoming one
-	ARGUMENTS:
-	- std::vector<vector3> a_lNormal -> list of normals
+	ARGUMENTS: std::vector<vector3> a_lNormal -> list of normals
 	OUTPUT: ---
 	*/
 	void SetNormalList(std::vector<vector3> a_lNormal);
@@ -450,8 +475,7 @@ public:
 	std::vector<vector3> GetNormalList(void);
 	/*
 	USAGE: Set the list of tangents to the incoming one
-	ARGUMENTS:
-	- std::vector<vector3> a_lTangent -> list of tangents
+	ARGUMENTS: std::vector<vector3> a_lTangent -> list of tangents
 	OUTPUT: ---
 	*/
 	void SetTangentList(std::vector<vector3> a_lTangent);
@@ -463,8 +487,7 @@ public:
 	std::vector<vector3> GetTangentList(void);
 	/*
 	USAGE: Set the list of bitangents to the incoming one
-	ARGUMENTS:
-	- std::vector<vector3> a_lbitangents -> list of bitangents
+	ARGUMENTS: std::vector<vector3> a_lbitangents -> list of bitangents
 	OUTPUT: ---
 	*/
 	void SetBitangentList(std::vector<vector3> a_lBitangent);
@@ -482,8 +505,7 @@ public:
 	String GetName(void);
 	/*
 	USAGE: Sets the Mesh's name
-	ARGUMENTS:
-	- String a_sName -> new name to add
+	ARGUMENTS: String a_sName -> new name to add
 	OUTPUT: ---
 	*/
 	virtual void SetName(String a_sName);
@@ -505,83 +527,125 @@ public:
 	OUTPUT: ---
 	*/
 	uint GetUniqueIdentifier(void);
+	/*
+	USAGE: If this is a cloned group this will return the original one
+	ARGUMENTS: ---
+	OUTPUT: original group; nullptr if this is an original group
+	*/
+	Mesh* GetOriginal(void);
 #pragma endregion
 #pragma region Primitive Generation
 	/*
 	USAGE: Generates a plane
 	ARGUMENTS:
-		float a_fSize -> Size of each side
-		vector3 a_v3Color -> Color of the mesh
+	-	float a_fSize -> Size of each side
+	-	vector3 a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GeneratePlane(float a_fSize, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a cube
 	ARGUMENTS:
-		float a_fSize -> Size of each side
-		vector3 a_v3Color -> Color of the mesh
+	-	float a_fSize -> Size of each side
+	-	vector3 a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GenerateCube(float a_fSize, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a cuboid
 	ARGUMENTS:
-		vector3 a_v3Dimensions -> Dimensions of each side of the cuboid
-		vector3 a_v3Color -> Color of the mesh
+	-	vector3 a_v3Dimensions -> Dimensions of each side of the cuboid
+	-	vector3 a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GenerateCuboid(vector3 a_v3Dimensions, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a cone mesh
 	ARGUMENTS:
-		float a_fRadius -> radius
-		float a_fHeight -> how tall is the mesh
-		int a_nSubdivisions -> divisions of the cap
-		vector3 a_v3Color -> Color of the mesh
+	-	float a_fRadius -> radius
+	-	float a_fHeight -> how tall is the mesh
+	-	int a_nSubdivisions -> divisions of the cap
+	-	vector3 a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a cylinder mesh
 	ARGUMENTS:
-		float a_fRadius -> radius
-		float a_fHeight -> how tall is the mesh
-		int a_nSubdivisions -> divisions on the cap
-		vector3 a_v3Color -> Color of the mesh
+	-	float a_fRadius -> radius
+	-	float a_fHeight -> how tall is the mesh
+	-	int a_nSubdivisions -> divisions on the cap
+	-	vector3 a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a tube mesh
 	ARGUMENTS:
-		float a_fOuterRadius -> outer radius
-		float a_fInnerRadius -> inner radius
-		float a_fHeight -> how tall is the mesh
-		int a_nSubdivisions -> divisions on the cap
-		a_v3Color -> Color of the mesh
+	-	float a_fOuterRadius -> outer radius
+	-	float a_fInnerRadius -> inner radius
+	-	float a_fHeight -> how tall is the mesh
+	-	int a_nSubdivisions -> divisions on the cap
+	-	a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a torus mesh
 	ARGUMENTS:
-		float a_fOuterRadius -> Outer radius
-		float a_fInnerRadius -> Inner Radius
-		int a_nSubdivisionHeight -> divisions vertical
-		int a_nSubdivisionAxis -> divisions along the roundness of the mesh
-		a_v3Color -> Color of the mesh
+	-	float a_fOuterRadius -> Outer radius
+	-	float a_fInnerRadius -> Inner Radius
+	-	int a_nSubdivisionHeight -> divisions vertical
+	-	int a_nSubdivisionAxis -> divisions along the roundness of the mesh
+	-	a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSubdivisionHeight, int a_nSubdivisionAxis, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a Sphere mesh
 	ARGUMENTS:
-	float a_fRadius -> radius of the sphere
-	int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
-	a_v3Color -> Color of the mesh
+	-	float a_fRadius -> radius of the sphere
+	-	int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
+	-	a_v3Color -> Color of the mesh
 	OUTPUT: ---
 	*/
 	void GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates a line Sphere mesh
+	ARGUMENTS:
+	-	float a_fRadius -> radius of the sphere
+	-	int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
+	-	a_v3Color -> Color of the mesh
+	OUTPUT: ---
+	NOTES: Based on Kiernan Brown's method
+	*/
+	void GenerateIsoSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates a line Sphere mesh
+	ARGUMENTS:
+	-	float a_fRadius -> radius of the sphere
+	-	int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
+	-	a_v3Color -> Color of the mesh
+	OUTPUT: ---
+	NOTES: Based on Giovanni Aleman's method
+	*/
+	void GenerateIcoSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates a wire cube
+	ARGUMENTS:
+	-	float a_fSize -> Size of each side
+	-	vector3 a_v3Color -> Color of the mesh
+	OUTPUT: ---
+	*/
+	void GenerateWireCube(float a_fSize, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates a wire Sphere
+	ARGUMENTS:
+	-	float a_fRadius -> Radius of the sphere
+	-	vector3 a_v3Color -> Color of the mesh
+	OUTPUT: ---
+	*/
+	void GenerateWireSphere(float a_fRadius, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a skybox using the skybox.png file from data folder
 	ARGUMENTS: ---
@@ -589,21 +653,26 @@ public:
 	*/
 	void GenerateSkybox(void);
 	/*
+	USAGE: Generates a line using the two points and colors provided
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void GenerateLine(vector3 a_v3Start, vector3 a_v3End, vector3 a_v3ColorStart, vector3 a_v3ColorEnd);
+	/*
 	USAGE: returns the static count of meshes
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
 	static uint GetStaticCount(void);
 	/*
-	USAGE: Will get how many times the graphics card has been 
-	called to render something using a Mesh object
+	USAGE: Will get how many times the graphics card has been called 
+		to render something using a Mesh object
 	ARGUMENTS: ---
 	OUTPUT: number of calls
 	*/
 	static uint GetRenderCallCount(void);
 	/*
-	USAGE: Will reset the render call count
-	called to render something using a Mesh object
+	USAGE: Will reset the render call count	called to render something using a Mesh object
 	ARGUMENTS: ---
 	OUTPUT: number of calls
 	*/
@@ -614,10 +683,11 @@ public:
 //EXPIMP_TEMPLATE template class SimplexDLL std::vector<Mesh>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Mesh*>;
 
-}
+} //namespace Simplex
+
+#endif //__MESHCLASS_H_
 /*
 USAGE:
 ARGUMENTS: ---
 OUTPUT: ---
 */
-#endif //__MESHCLASS_H_

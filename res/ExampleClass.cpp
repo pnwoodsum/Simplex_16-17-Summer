@@ -1,5 +1,5 @@
-#include "RE\system\ExampleClass.h"
-using namespace ReEng;
+#include "ExampleClass.h"
+using namespace Simplex;
 //  ExampleClass
 void ExampleClass::Init(void)
 {

@@ -1,45 +1,41 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
-Date: 2015/06
+Date: 2017/06
 ----------------------------------------------*/
 #ifndef __EXAMPLECLASS_H_
 #define __EXAMPLECLASS_H_
 
-#include "RE\system\SystemSingleton.h"
+#include "Simplex\Simplex.h"
 
-namespace ReEng
+namespace Simplex
 {
 
 //System Class
-class ReEngDLL ExampleClass
+class ExampleClass
 {
 	int m_nData = 0; //Number of elements in the list of elements
 	std::vector<int> m_lData; //list of elements
 
 public:
 	/*
-	Method: ExampleClass
 	Usage: Constructor
 	Arguments: ---
-	Output: class object
+	Output: class object instance
 	*/
 	ExampleClass(void);
 	/*
-	Method: ExampleClass
 	Usage: Copy Constructor
 	Arguments: class object to copy
 	Output: class object instance
 	*/
 	ExampleClass(ExampleClass const& other);
 	/*
-	Method: operator=
 	Usage: Copy Assignment Operator
 	Arguments: class object to copy
 	Output: ---
 	*/
 	ExampleClass& operator=(ExampleClass const& other);
 	/*
-	Method: ~ExampleClass
 	Usage: Destructor
 	Arguments: ---
 	Output: ---
@@ -47,25 +43,21 @@ public:
 	~ExampleClass(void);
 
 	/*
-	Method: Swap
 	Usage: Changes object contents for other object's
-	Arguments:
-	other -> object to swap content from
+	Arguments: other -> object to swap content from
 	Output: ---
 	*/
 	void Swap(ExampleClass& other);
 
 	/*
-	Method:
-	Usage:
+	Usage: Gets data member
 	Arguments: ---
-	Output:
+	Output: data
 	*/
 	int GetData(void);
 	/*
-	Method:
-	Usage:
-	Arguments:
+	Usage: Sets data member
+	Arguments: int a_nData = 1 -> data to set
 	Output: ---
 	*/
 	void SetData(int a_nData = 1);
@@ -73,40 +65,39 @@ public:
 	//__declspec(property(get = GetData, put = SetData)) int Data;
 
 	/*
-	Method:
-	Usage:
-	Arguments:
+	Usage: adds data on vector
+	Arguments: int a_nData -> data to add
 	Output: ---
 	*/
 	void SetDataOnVector(int a_nData);
 	/*
-	Method:
-	Usage:
-	Arguments:
-	Output:
+	Usage: gets data on vector at the specified entry
+	Arguments: int a_nIndex -> entry index 
+	Output: entry's content
 	*/
 	int& GetDataOnVector(int a_nIndex);
 
 private:
 	/*
-	Method: Release
 	Usage: Deallocates member fields
 	Arguments: ---
 	Output: ---
 	*/
 	void Release(void);
 	/*
-	Method: Init
 	Usage: Allocates member fields
 	Arguments: ---
 	Output: ---
 	*/
 	void Init(void);
-};
+};//class
 
-EXPIMP_TEMPLATE template class ReEngDLL std::vector<ExampleClass>;
-EXPIMP_TEMPLATE template class ReEngDLL std::vector<ExampleClass*>;
-
-}
+} //namespace Simplex
 
 #endif //__EXAMPLECLASS_H__
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

@@ -102,5 +102,12 @@ private:
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Texture>;
 EXPIMP_TEMPLATE template class SimplexDLL std::vector<Texture*>;
 
-}
+} //namespace Simplex
+
 #endif //_TEXTURECLASS_H
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

@@ -116,6 +116,7 @@ xcopy "$(SolutionDir)include\Simplex\Shaders" "$(SolutionDir)_Binary\Shaders" /y
     <ClInclude Include="..\res\resource.h" />
     <ClInclude Include="AppClass.h" />
     <ClInclude Include="ControllerConfiguration.h" />
+    <ClInclude Include="Definitions.h" />
     <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemGroup>

@@ -84,7 +84,7 @@ protected:
 	//C--D
 	//|  |
 	//A--B
-	//Will make the triang A->B->C and then the triang C->B->D
+	//Will make the triangle A->B->C and then the triangle C->B->D
 	ARGUMENTS:
 		vector3 a_vBottomLeft (A)
 		vector3 a_vBottomRight (B)
@@ -98,7 +98,7 @@ protected:
 	//C
 	//| \
 	//A--B
-	//This will make the triang A->B->C
+	//This will make the triangle A->B->C
 	ARGUMENTS:
 		vector3 a_vBottomLeft (A)
 		vector3 a_vBottomRight (B)

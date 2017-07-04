@@ -28,7 +28,7 @@ class SDLApp
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager
 	CameraManager* m_pCameraMngr = nullptr; // Singleton for the camera that represents our scene
 	
-	Model* m_pModel = nullptr; //Model to try
+	Simplex::Model* m_pModel = nullptr; //Model to try
 
 public:
 	static SDLApp* m_pSelfPointer; //Used for callbacks
@@ -85,7 +85,7 @@ private:
 	*/
 	SDLApp(SDLApp const& input);
 	/*
-	USAGE: copy assignement, private so it does not let object copy
+	USAGE: copy assignment, private so it does not let object copy
 	ARGUMENTS:
 	GLFWApp const& input -> object to copy (well in this case not)
 	OUTPUT: ---
@@ -186,4 +186,11 @@ protected:
 	void Idle(void);
 	
 };
+
 #endif //__SDLAPPCLASS_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

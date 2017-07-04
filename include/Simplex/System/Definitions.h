@@ -43,28 +43,19 @@ Date: 2017/05
 
 namespace Simplex
 {
-typedef std::string String;
-typedef glm::vec2 vector2;
-typedef glm::vec3 vector3;
-typedef glm::vec4 vector4;
-typedef glm::mat3 matrix3;
-typedef glm::mat4 matrix4;
-typedef unsigned int uint;
-typedef glm::quat quaternion;
+	typedef unsigned int uint;
+	typedef std::string String;
+	typedef glm::vec2 vector2;
+	typedef glm::vec3 vector3;
+	typedef glm::vec4 vector4;
+	typedef glm::mat3 matrix3;
+	typedef glm::mat4 matrix4;
+	typedef glm::quat quaternion;
 /*
 USAGE: will safely delete the input pointer and initialize it to nullptr, DOES NOT WORK WITH POINTER ARRAY
 */
 #define SafeDelete(p){ if(p) { delete p; p = nullptr; } }
-////https://stackoverflow.com/questions/10240161/reason-to-pass-a-pointer-by-reference-in-c/20188970#20188970
-//template<typename T>
-//void SafeDelete(T*& p)
-//{
-//	if(p != nullptr)
-//	{
-//		delete p;
-//		p = nullptr;
-//	} 
-//}
+
 #define PI 3.14159265358979323846
 #define IDENTITY_M4 matrix4(1.0f)
 #define IDENTITY_QUAT quaternion();
@@ -198,10 +189,10 @@ struct SimplexDLL MeshOptions
 	MeshOptions():m_m4Transform(IDENTITY_M4), m_nRender(RENDER_SOLID) {};
 	MeshOptions(matrix4 a_m4Transform, int a_nRender):m_m4Transform(a_m4Transform), m_nRender(a_nRender){};
 };
+
 /*
 USAGE: Will translate all characters in the string to upper case and return a copy string
-ARGUMENTS:
-	String a_sInput -> input string
+ARGUMENTS: String a_sInput -> input string
 OUTPUT: output
 */
 static String ToUpperCase(String a_sInput)
@@ -210,11 +201,12 @@ static String ToUpperCase(String a_sInput)
 	std::transform(output.begin(), output.end(), output.begin(), ::toupper);
 	return output;
 }
+
 /*
 USAGE: Will trim the input string when the first token is found
 ARGUMENTS:
-	String a_sInput -> input string
-	char a_sToken -> token to be used as divider
+-	String a_sInput -> input string
+-	char a_sToken -> token to be used as divider
 OUTPUT: trimmed output
 */
 static String CopyUntilToken(String a_sInput, char a_sToken)
@@ -236,11 +228,12 @@ static String CopyUntilToken(String a_sInput, char a_sToken)
 	}
 	return output;
 }
+
 /*
 USAGE: Will trim the input string from when the first token is found till the end
 ARGUMENTS:
-String a_sInput -> input string
-char a_sToken -> token to be used as divider
+-	String a_sInput -> input string
+-	char a_sToken -> token to be used as divider
 OUTPUT: trimmed output
 */
 static String CopyAfterToken(String a_sInput, char a_sToken)
@@ -276,11 +269,11 @@ static String CopyAfterToken(String a_sInput, char a_sToken)
 /*
 USAGE: Will map a value from an original scale to a new scale
 ARGUMENTS:
-T valueToMap -> input value
-T originalScale_min ->  Start of the original scale
-T originalScale_max -> End of the original scale
-T mappedScale_min -> Start of the new scale
-T mappedScale_max -> end of the new scale
+-	T valueToMap -> input value
+-	T originalScale_min ->  Start of the original scale
+-	T originalScale_max -> End of the original scale
+-	T mappedScale_min -> Start of the new scale
+-	T mappedScale_max -> end of the new scale
 OUTPUT: returns the mapped value
 */
 template <class T>
@@ -290,30 +283,8 @@ static T MapValue(T valueToMap, T originalScale_min, T originalScale_max, T mapp
 }
 
 /*
-MapVector
-USAGE: Will return a vector mapped in the mappedScale range from a value vectorToMap in the OriginalScale range
-ARGUMENTS:
-vector3 vectorToMap -> input vector
-vector3 originalScaleVectorMin -> Start of the original vector
-vector3 originalScaleVectorMax -> End of the original vector
-vector3 mappedScaleVectorMin -> Start of the new vector
-vector3 mappedScaleVectorMax -> End of the new vector
-OUTPUT: returns the mapped vector
-*/
-static vector3 MapVector(vector3 vectorToMap, vector3 originalScaleVectorMin, vector3 originalScaleVectorMax,
-	vector3 mappedScaleVectorMin, vector3 mappedScaleVectorMax)
-{
-	vector3 v3Output;
-	v3Output.x = MapValue(vectorToMap.x, originalScaleVectorMin.x, originalScaleVectorMax.x, mappedScaleVectorMin.x, mappedScaleVectorMax.x);
-	v3Output.y = MapValue(vectorToMap.y, originalScaleVectorMin.y, originalScaleVectorMax.y, mappedScaleVectorMin.y, mappedScaleVectorMax.y);
-	v3Output.z = MapValue(vectorToMap.z, originalScaleVectorMin.z, originalScaleVectorMax.z, mappedScaleVectorMin.z, mappedScaleVectorMax.z);
-	return v3Output;
-}
-/*
-ToMatrix4
 USAGE: Will take a glm::quat and return a glm::mat4 wrapping glm::mat4_cast
-ARGUMENTS:
-quaternion a_qInput -> quaternion to translate from
+ARGUMENTS: quaternion a_qInput -> quaternion to translate from
 OUTPUT: matrix4 conversion of a_qInput
 */
 static matrix4 ToMatrix4(quaternion a_qInput)
@@ -324,16 +295,12 @@ static matrix4 ToMatrix4(quaternion a_qInput)
 /*
 USAGE: Will generate random numbers limited to the cap (inclusive)
 ARGUMENTS:
-uint a_uMin -> lower cap (exclusive)
-uint a_uMax -> upper cap (exclusive)
+-	uint a_uMin -> lower cap (exclusive)
+-	uint a_uMax -> upper cap (exclusive)
 OUTPUT: random number between 0 and a_uMax
 */
 static double GenerateRandom(double a_uMin, double a_uMax)
 {
-	//Old way
-	//srand((unsigned)time(0));
-	//return (rand() % a_uMax);
-
 	if (a_uMin >= a_uMax)
 		a_uMax = a_uMin + 1;
 
@@ -344,9 +311,14 @@ static double GenerateRandom(double a_uMin, double a_uMax)
 	return dist(gen);
 }
 
-/** Taken from Earl F. Glynn's web page:
-* <a href="http://www.efg2.com/Lab/ScienceAndEngineering/Spectra.htm">Spectra Lab Report</a>
-* */
+/* 
+USAGE: Will generate a vector3 from the provided wavelength value
+ARGUMENTS: double Wavelength -> wavelength value
+OUTPUT: value of the wavelenght on a 0 to 1 vector3
+NOTES:
+	Adapted from Earl F. Glynn's web page:
+	http://www.efg2.com/Lab/ScienceAndEngineering/Spectra.htm
+*/
 static vector3 WaveLengthToRGB(double Wavelength) {
 	double Gamma = 0.80;
 	double IntensityMax = 255;
@@ -414,9 +386,13 @@ static vector3 WaveLengthToRGB(double Wavelength) {
 	v3Color = MapValue(v3Color, vector3(0.0f), vector3(255.0f), vector3(0.0f), vector3(1.0f));
 
 	return v3Color;
-}
+};
 
-
-}
+} //namespace Simplex
 
 #endif //__REDEFINITIONS_H__
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */

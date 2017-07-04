@@ -2,12 +2,12 @@
 void SDLApp::InitVariables(void)
 {
 	//setup camera position
-	m_pCameraMngr->SetPositionTargetAndView(
+	m_pCameraMngr->SetPositionTargetAndUp(
 		vector3(0.0f, 2.5f, 15.0f),//Camera position
-		vector3(0.0f, 2.5f, 0.0f),//What Im looking at
+		vector3(0.0f, 2.5f, 0.0f),//What I'm looking at
 		AXIS_Y);//What is up
 	//init variables
-	m_pModel = new Model();
+	m_pModel = new Simplex::Model();
 	//load model
 	m_pModel->Load("Lego\\Unikitty.BTO");
 }

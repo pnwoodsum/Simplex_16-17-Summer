@@ -4,12 +4,12 @@ void Application::InitVariables(void)
 	//Change this to your name and email
 	m_sProgrammer = "Peter Woodsum - pnw8434@rit.edu";
 
-	//Alberto needed this at this position for software recording.
+	////Alberto needed this at this position for software recording.
 	m_pWindow->setPosition(sf::Vector2i(710, 0));
 	
 	//Set the position and target of the camera
 	//(I'm at [0,0,10], looking at [0,0,0] and up is the positive Y axis)
-	m_pCameraMngr->SetPositionTargetAndView(AXIS_Z * 20.0f, ZERO_V3, AXIS_Y);
+	m_pCameraMngr->SetPositionTargetAndUp(AXIS_Z * 20.0f, ZERO_V3, AXIS_Y);
 
 	//if the light position is zero move it
 	if (m_pLightMngr->GetPosition(1) == ZERO_V3)

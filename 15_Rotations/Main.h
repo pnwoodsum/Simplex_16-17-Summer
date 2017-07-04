@@ -6,3 +6,9 @@ Date: 2017/05
 #define __MAIN_H_
 #include "AppClass.h"
 #endif //__MAIN_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

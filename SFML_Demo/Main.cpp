@@ -32,7 +32,7 @@ int main()
 
 	MeshManager* pMeshMngr = MeshManager::GetInstance();
 	pMeshMngr->SetRenderTarget(0, 0, 0, size.x, size.y);
-	Model* pModel = new Model();
+	Model* pModel = new Simplex::Model();
 	pModel->Load("Lego\\Unikitty.BTO");
 
 	// run the main loop

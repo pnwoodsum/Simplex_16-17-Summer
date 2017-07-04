@@ -13,3 +13,9 @@ on: 2017/06/02
 #include "..\res\resource.h"
 
 #endif //__MAIN_H_
+
+/*
+USAGE:
+ARGUMENTS: ---
+OUTPUT: ---
+*/

@@ -1,6 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __SIMPLEXMESHMANAGER_H_
 #define __SIMPLEXMESHMANAGER_H_
@@ -10,7 +11,8 @@ Date: 2015/06
 
 namespace Simplex
 {
-//MeshManager
+
+//MeshManager singleton
 class SimplexDLL MeshManager
 {
 	std::vector<Mesh*> m_meshList; //Lit of all the meshes added to the system
@@ -19,8 +21,8 @@ class SimplexDLL MeshManager
 
 	static MeshManager* m_pInstance; // Singleton pointer
 	ShaderManager* m_pShaderMngr = nullptr;	//Shader Manager
-	MaterialManager* m_pMatMngr = nullptr;		//Material Manager
-	LightManager* m_pLightMngr = nullptr;		//Light Manager
+	MaterialManager* m_pMatMngr = nullptr;	//Material Manager
+	LightManager* m_pLightMngr = nullptr;	//Light Manager
 	CameraManager* m_pCameraMngr = nullptr;	//Camera Manager
 	Text* m_pText; //Text Singleton
 public:
@@ -77,7 +79,7 @@ public:
 	ARGUMENTS:
 		float a_fSize -> Size of each side
 		vector3 a_v3Color -> Color of the mesh
-	OUTPUT: name of the generated Mesh
+	OUTPUT: index of the generated Mesh
 	*/
 	int GeneratePlane(float a_fSize, vector3 a_v3Color = C_WHITE);
 	/*
@@ -85,7 +87,7 @@ public:
 	ARGUMENTS:
 		float a_fSize -> Size of each side
 		vector3 a_v3Color -> Color of the mesh
-	OUTPUT: name of the generated Mesh
+	OUTPUT: index of the generated Mesh
 	*/
 	int GenerateCube(float a_fSize, vector3 a_v3Color = C_WHITE);
 	/*
@@ -93,7 +95,7 @@ public:
 	ARGUMENTS:
 		vector3 a_v3Dimensions -> Dimensions of each side of the cuboid
 		vector3 a_v3Color -> Color of the mesh
-	OUTPUT: name of the generated Mesh
+	OUTPUT: index of the generated Mesh
 	*/
 	int GenerateCuboid(vector3 a_v3Dimensions, vector3 a_v3Color = C_WHITE);
 	/*
@@ -103,7 +105,7 @@ public:
 		float a_fHeight -> how tall is the mesh
 		int a_nSubdivisions -> divisions of the cap
 		vector3 a_v3Color -> Color of the mesh
-	OUTPUT: name of the generated Mesh
+	OUTPUT: index of the generated Mesh
 	*/
 	int GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
 	/*
@@ -113,7 +115,7 @@ public:
 		float a_fHeight -> how tall is the mesh
 		int a_nSubdivisions -> divisions on the cap
 		vector3 a_v3Color -> Color of the mesh
-	OUTPUT: name of the generated Mesh
+	OUTPUT: index of the generated Mesh
 	*/
 	int GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
 	/*
@@ -124,35 +126,75 @@ public:
 		float a_fHeight -> how tall is the mesh
 		int a_nSubdivisions -> divisions on the cap
 		a_v3Color -> Color of the mesh
-	OUTPUT: name of the generated Mesh
+	OUTPUT: index of the generated Mesh
 	*/
 	int GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a torus mesh
 	ARGUMENTS:
-		float a_fOuterRadius -> Outer radius
-		float a_fInnerRadius -> Inner Radius
-		int a_nSubdivisionHeight -> divisions vertical
-		int a_nSubdivisionAxis -> divisions along the roundness of the mesh
-		a_v3Color -> Color of the mesh
-	OUTPUT: name of the generated Mesh
+	-	float a_fOuterRadius -> Outer radius
+	-	float a_fInnerRadius -> Inner Radius
+	-	int a_nSubdivisionHeight -> divisions vertical
+	-	int a_nSubdivisionAxis -> divisions along the roundness of the mesh
+	-	a_v3Color -> Color of the mesh
+	OUTPUT: index of the generated Mesh
 	*/
 	int GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSubdivisionHeight, int a_nSubdivisionAxis, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a Sphere mesh
 	ARGUMENTS:
-		float a_fDiameter -> diameter of the sphere (radius times 2)
-		int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
-		a_v3Color -> Color of the mesh
+	-	float a_fRadius -> radius of the sphere
+	-	int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
+	-	a_v3Color -> Color of the mesh
+	OUTPUT: index of the generated Mesh
+	*/
+	int GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates an IsoSphere mesh
+	ARGUMENTS:
+	-	float a_fRadius -> radius of the sphere
+	-	int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
+	-	a_v3Color -> Color of the mesh
+	OUTPUT: index of the generated Mesh
+	*/
+	int GenerateIsoSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates an IcoSphere mesh
+	ARGUMENTS:
+	-	float a_fRadius -> radius of the sphere
+	-	int a_nSubdivisions -> Number of divisions, not a lot of difference in shapes larger than 3 subd
+	-	a_v3Color -> Color of the mesh
+	OUTPUT: index of the generated Mesh
+	*/
+	int GenerateIcoSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates an WireCube mesh
+	ARGUMENTS:
+	-	float a_fSize -> Size of the cube
+	-	a_v3Color -> Color of the mesh
+	OUTPUT: index of the generated Mesh
+	*/
+	int GenerateWireCube(float a_fSize, vector3 a_v3Color = C_WHITE);
+	/*
+	USAGE: Generates an WireSphere mesh
+	ARGUMENTS:
+	-	float a_fRadius -> radius of the sphere
+	-	a_v3Color -> Color of the mesh
 	OUTPUT: name of the generated Mesh
 	*/
-	int GenerateSphere(float a_fDiameter, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	int GenerateWireSphere(float a_fRadius, vector3 a_v3Color = C_WHITE);
 	/*
 	USAGE: Generates a skybox using the skybox.png file from data folder
-	ARGUMENTS:
-	OUTPUT: name of the generated Mesh
+	ARGUMENTS: ---
+	OUTPUT: index of the generated Mesh
 	*/
 	int GenerateSkybox(void);
+	/*
+	USAGE:
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	int GenerateLine(vector3 a_v3Start, vector3 a_v3End, vector3 a_v3ColorStart, vector3 a_v3ColorEnd);
 	/*
 	USAGE: will return all the names already stored in the mesh list
 	ARGUMENTS: ---
@@ -170,45 +212,113 @@ public:
 	/*
 	USAGE: Renders the cube on the specified position
 	ARGUMENTS:
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
 	OUTPUT: ---
 	*/
 	void AddPlaneToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
 	/*
 	USAGE: Renders the cube on the specified position
 	ARGUMENTS:
-	OUTPUT: returns the name of the mesh that will render
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
 	*/
 	void AddCubeToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
 	/*
 	USAGE: Renders the cone on the specified position
 	ARGUMENTS:
-	OUTPUT: returns the name of the mesh that will render
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
 	*/
 	void AddConeToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
 	/*
 	USAGE: Renders the cylinder on the specified position
 	ARGUMENTS:
-	OUTPUT: returns the name of the mesh that will render
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
 	*/
 	void AddCylinderToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
 	/*
 	USAGE: Renders the tube on the specified position
 	ARGUMENTS:
-	OUTPUT: returns the name of the mesh that will render
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
 	*/
 	void AddTubeToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
 	/*
 	USAGE: Renders the torus on the specified position
 	ARGUMENTS:
-	OUTPUT: returns the name of the mesh that will render
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
 	*/
 	void AddTorusToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
 	/*
 	USAGE: Renders the sphere on the specified position
 	ARGUMENTS:
-	OUTPUT: returns the name of the mesh that will render
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
 	*/
 	void AddSphereToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
+	/*
+	USAGE: Renders an IcoSphere on the specified position
+	ARGUMENTS:
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
+	*/
+	void AddIcoSphereToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
+	/*
+	USAGE: Renders an IsoSphere on the specified position
+	ARGUMENTS:
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
+	*/
+	void AddIsoSphereToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
+	/*
+	USAGE: Renders an WireCube on the specified position
+	ARGUMENTS:
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
+	*/
+	void AddWireCubeToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
+	/*
+	USAGE: Renders an WireSphere on the specified position
+	ARGUMENTS:
+	-	matrix4 a_m4ToWorld -> Space to render the primitive onto
+	-	vector3 a_v3Color -> Color to render the solid part of the primitive
+	-	int a_Render = RENDER_SOLID -> Render options RENDER_SOLID | RENDER_WIRE
+	OUTPUT: ---
+	*/
+	void AddWireSphereToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Color, int a_Render = RENDER_SOLID);
+	/*
+	USAGE: Renders a line in the specified positions and colors
+	ARGUMENTS:
+	-	matrix4 a_m4ToWorld -> Space to draw the primitive onto
+	-	vector3 a_v3Start -> Start point in local space
+	-	vector3 a_v3End -> End point in local space
+	-	vector3 a_v3ColorStart -> Color of the start point
+	-	vector3 a_v3ColorEnd -> Color of the end point
+	OUTPUT: ---
+	*/
+	void AddLineToRenderList(matrix4 a_m4ToWorld, vector3 a_v3Start, vector3 a_v3End, vector3 a_v3ColorStart, vector3 a_v3ColorEnd);
 	/*
 	USAGE: This add a giant inwards box to the scene at the origin which will translate along
 		the camera use the argument to change the texture rendered
@@ -218,7 +328,31 @@ public:
 	*/
 	void AddSkyboxToRenderList(String a_sFileName = "Skybox.png");
 	/*
-	USAGE: Finds the specified mesh and speficies a tranform to display
+	USAGE: Render an axis on the specified position
+	ARGUMENTS: matrix4 a_m4ToWorld -> space on which the axis will be rendered
+	OUTPUT: ---
+	*/
+	void AddAxisToRenderList(matrix4 a_m4ToWorld);
+	/*
+	USAGE: Render a grid on the specified position
+	ARGUMENTS: matrix4 a_m4ToWorld -> space on which the grid will be rendered
+	OUTPUT: ---
+	*/
+	void AddGridToRenderList(matrix4 a_m4ToWorld);
+	/*
+	USAGE: Render a grid based on the active camera's mode
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void AddGridToRenderList();
+	/*
+	USAGE: Render a visual representation of the camera
+	ARGUMENTS: int a_nIndex = -1 -> camera index, if less than 0 all cameras will be rendered
+	OUTPUT: ---
+	*/
+	void AddCameraToRenderList(int a_nIndex = -1);
+	/*
+	USAGE: Finds the specified mesh and speficies a transform to display
 	ARGUMENTS:
 		uint a_nIndex -> index of the mesh to apply transform to
 		matrix4 a_m4Transform -> transform to apply
@@ -227,7 +361,7 @@ public:
 	*/
 	void AddMeshToRenderList(uint a_nIndex, matrix4 a_m4Transform, int a_Render = RENDER_SOLID);
 	/*
-	USAGE: Applies a tranform to display to the specified mesh by name, the mesh will be
+	USAGE: Applies a transform to display to the specified mesh by name, the mesh will be
 	lookout	for in the map of meshes, using the mesh index if know will result in faster
 	additions
 	ARGUMENTS:
@@ -238,7 +372,7 @@ public:
 	*/
 	void AddMeshToRenderList(String a_sMeshName, matrix4 a_m4Transform, int a_Render = RENDER_SOLID);
 	/*
-	USAGE: Applies a tranform to display to the specified mesh, the mesh will be lookout
+	USAGE: Applies a transform to display to the specified mesh, the mesh will be lookout
 	for in the map of meshes, using the mesh index if know will result in faster additions
 	ARGUMENTS:
 	Mesh* a_pMesh -> mesh to apply transform to
@@ -344,10 +478,11 @@ private:
 	void Release(void);
 };
 
-}
+} //namespace Simplex
+
+#endif //__MESHMANAGERSINGLETON_H_
 /*
-USAGE: 
+USAGE:
 ARGUMENTS: ---
 OUTPUT: ---
 */
-#endif //__MESHMANAGERSINGLETON_H_

@@ -1,7 +1,7 @@
 /*----------------------------------------------
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2015/06
-Modified: 2016/05
+Modified: 2017/06
 ----------------------------------------------*/
 #ifndef __MATERIALMANAGERSINGLETON_H_
 #define __MATERIALMANAGERSINGLETON_H_
@@ -14,11 +14,12 @@ Modified: 2016/05
 namespace Simplex
 {
 
+//MaterialManager singleton
 class SimplexDLL MaterialManager
 {
 	/* 
 		The material vector is public for accessing speed reasons its more secure to have it as private
-		and provide the right accessors for it, but its call so often that it creates overhead the other way
+		and provide the right accessors for it
 	*/
 	std::map<String,int> m_map; //Map of the materials
 	SystemSingleton* m_pSystem; //System class Pointer
@@ -237,10 +238,12 @@ private:
 	*/
 	void Init(void);
 };
-/*
-USAGE: 
-ARGUMENTS: ---
-OUTPUT: ---
-*/
-}
+
+} //namespace Simplex
+
 #endif //_MATERIALMANAGERSINGLETON_H
+  /*
+  USAGE:
+  ARGUMENTS: ---
+  OUTPUT: ---
+  */
