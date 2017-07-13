@@ -66,6 +66,7 @@ void Application::Display(void)
 	//end the current frame (internally swaps the front and back buffers)
 	m_pWindow->display();
 }
+
 void Application::Release(void)
 {
 	//release the singleton

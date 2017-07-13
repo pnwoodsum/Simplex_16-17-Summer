@@ -15,6 +15,12 @@ class MyCamera
 	vector3 m_v3Position = vector3(0.0f, 0.0f, 10.0f); //Where my camera is located
 	vector3 m_v3Target = vector3(0.0f, 0.0f, 0.0f); //What I'm looking at
 	vector3 m_v3Up = vector3(0.0f, 1.0f, 0.0f); //What is up
+	vector3 m_v3Forward = m_v3Target - m_v3Position;
+	vector3 m_v3Right = vector3(1.0f, 0.0f, 0.0f);
+	vector3 m_v3Translation = vector3(0.0f, 0.0f, 0.0f);
+
+	float m_fYaw = 0.0f;
+	float m_fPitch = 0.0f;
 
 	bool m_bPerspective = true; //perspective view? False is Orthographic
 
@@ -211,6 +217,42 @@ public:
 	OUTPUT: ---
 	*/
 	void CalculateProjectionMatrix(void);
+
+
+	/*
+	USAGE: Move the camera forward or backwards
+	ARGUMENTS: a_v3Speed -> amount to move
+	OUTPUT: ---
+	*/
+	void MoveZ(float a_fSpeed);
+
+	/*
+	USAGE: Move the camera left or right
+	ARGUMENTS: a_v3Speed -> amount to move
+	OUTPUT: ---
+	*/
+	void MoveX(float a_fSpeed);
+	
+	/*
+	USAGE: Move the camera up or down
+	ARGUMENTS: a_v3Speed -> amount to move
+	OUTPUT: ---
+	*/
+	void MoveY(float a_fSpeed);
+
+	/*
+	USAGE: Move the camera up or down
+	ARGUMENTS: a_v3Speed -> amount to move
+	OUTPUT: ---
+	*/
+	void ChangePitch(float a_fAmount);
+
+	/*
+	USAGE: Change the pitch and yaw of the camera
+	ARGUMENTS: a_fPitch -> change in pitch: a_fYaw -> change in yaw
+	OUTPUT: ---
+	*/
+	void ChangePitchYaw(float a_fPitch, float a_fYaw);
 };
 
 } //namespace Simplex

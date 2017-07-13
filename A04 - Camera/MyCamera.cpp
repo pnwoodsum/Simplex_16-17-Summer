@@ -135,8 +135,31 @@ void Simplex::MyCamera::SetPositionTargetAndUp(vector3 a_v3Position, vector3 a_v
 
 void Simplex::MyCamera::CalculateViewMatrix(void)
 {
+	// Reinitialize the view matrix
+	m_m4View = glm::lookAt(m_v3Position, m_v3Target, AXIS_Y);
+
+	// Find the initial forward right and up vectors
+	m_v3Forward = glm::normalize(m_v3Target - m_v3Position);
+	m_v3Right = glm::normalize(glm::cross(m_v3Forward, AXIS_Y));
+	m_v3Up = glm::cross(m_v3Right, m_v3Forward);
+
+	// Calculate yaw and pitch quaternions.
+	glm::quat qPitch = glm::quat(glm::radians(m_fPitch) * m_v3Right);
+	glm::quat qYaw = glm::quat(glm::radians(m_fYaw) * m_v3Up);
+
+	// Find the current forward right and up vectors
+	glm::quat orientation = qPitch * qYaw;
+	m_v3Forward = m_v3Forward * orientation;
+	m_v3Up = m_v3Up * orientation;
+	m_v3Right = m_v3Right * orientation;
+
+	// Find the rotation for the view matrix
+	matrix4 m4Rotation = ToMatrix4(qPitch * qYaw);
+
 	//Calculate the look at
-	m_m4View = glm::lookAt(m_v3Position, m_v3Target, m_v3Up);
+	m_m4View = m4Rotation * glm::translate(m_m4View, m_v3Translation);
+
+
 }
 
 void Simplex::MyCamera::CalculateProjectionMatrix(void)
@@ -153,4 +176,25 @@ void Simplex::MyCamera::CalculateProjectionMatrix(void)
 										m_v2Vertical.x, m_v2Vertical.y, //vertical
 										m_v2NearFar.x, m_v2NearFar.y); //near and far
 	}
+}
+
+// Move the camera forward or backwards along its Z axis using the forward vector
+void Simplex::MyCamera::MoveZ(float a_fSpeed) {
+	m_v3Translation += (a_fSpeed * glm::normalize(m_v3Forward));
+}
+
+// Move the camera left or right along its X axis using the right vector
+void Simplex::MyCamera::MoveX(float a_fSpeed) {
+	m_v3Translation += (a_fSpeed * glm::normalize(m_v3Right));
+}
+
+// Move the camera up or down along its Y axis using the up vector
+void Simplex::MyCamera::MoveY(float a_fSpeed) {
+	m_v3Translation += (a_fSpeed * glm::normalize(m_v3Up));
+}
+
+// Update the current angle (degrees) around the X axis (pitch) and the Y axis (yaw)
+void Simplex::MyCamera::ChangePitchYaw(float a_fPitch, float a_fYaw) {
+	m_fPitch += a_fPitch;
+	m_fYaw += a_fYaw;
 }
