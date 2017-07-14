@@ -85,8 +85,39 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix)
 	m_m4ToWorld = a_m4ModelMatrix;
 	
 	//your code goes here---------------------
-	m_v3MinG = m_v3MinL;
-	m_v3MaxG = m_v3MaxL;
+	// Find the points of the obb and add to a vector of vector 3s
+	std::vector<vector3> pointList;
+
+	pointList.push_back(m_v3MinL);
+	pointList.push_back(vector3(m_v3MinL.x, m_v3MinL.y, m_v3MaxL.z));
+	pointList.push_back(vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MaxL.z));
+	pointList.push_back(vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MinL.z));
+	pointList.push_back(vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MinL.z));
+	pointList.push_back(vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MaxL.z));
+	pointList.push_back(vector3(m_v3MaxL.x, m_v3MaxL.y, m_v3MinL.z));
+	pointList.push_back(m_v3MaxL);
+
+	// Convert each of the points to global coordinates
+	for (int i = 0; i < 8; i++) {
+		pointList[i] = vector3(m_m4ToWorld * vector4(pointList[i], 1.0f));
+	}
+
+	// Initialize the min and max global points
+	m_v3MinG = pointList[0];
+	m_v3MaxG = pointList[0];
+
+	// Find the current min and max of the arbb
+	for (uint i = 1; i < 8; ++i)
+	{
+		if (m_v3MaxG.x < pointList[i].x) m_v3MaxG.x = pointList[i].x;
+		else if (m_v3MinG.x > pointList[i].x) m_v3MinG.x = pointList[i].x;
+
+		if (m_v3MaxG.y < pointList[i].y) m_v3MaxG.y = pointList[i].y;
+		else if (m_v3MinG.y > pointList[i].y) m_v3MinG.y = pointList[i].y;
+
+		if (m_v3MaxG.z < pointList[i].z) m_v3MaxG.z = pointList[i].z;
+		else if (m_v3MinG.z > pointList[i].z) m_v3MinG.z = pointList[i].z;
+	}
 	//----------------------------------------
 
 	//we calculate the distance between min and max vectors
