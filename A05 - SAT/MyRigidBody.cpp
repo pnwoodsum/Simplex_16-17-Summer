@@ -232,8 +232,10 @@ bool MyRigidBody::IsColliding(MyRigidBody* const a_pOther)
 	//if they are colliding check the SAT
 	if (bColliding)
 	{
-		if(SAT(a_pOther) != eSATResults::SAT_NONE)
+		uint satResult = SAT(a_pOther);
+		if (satResult != eSATResults::SAT_NONE){
 			bColliding = false;// reset to false
+		}
 	}
 
 	if (bColliding) //they are colliding
@@ -286,6 +288,168 @@ uint MyRigidBody::SAT(MyRigidBody* const a_pOther)
 	Simplex that might help you [eSATResults] feel free to use it.
 	(eSATResults::SAT_NONE has a value of 0)
 	*/
+
+	// Get the rotation for the x y and z of the first model
+	vector3 v3ARotations[3];
+	v3ARotations[0] = vector3(GetModelMatrix()[0][0], GetModelMatrix()[0][1], GetModelMatrix()[0][2]);
+	v3ARotations[1] = vector3(GetModelMatrix()[1][0], GetModelMatrix()[1][1], GetModelMatrix()[1][2]);
+	v3ARotations[2] = vector3(GetModelMatrix()[2][0], GetModelMatrix()[2][1], GetModelMatrix()[2][2]);
+
+	// Get the rotation for the x y and z of the second model
+
+	vector3 v3BRotations[3];
+	v3BRotations[0] = vector3(a_pOther->GetModelMatrix()[0][0], a_pOther->GetModelMatrix()[0][1], a_pOther->GetModelMatrix()[0][2]);
+	v3BRotations[1] = vector3(a_pOther->GetModelMatrix()[1][0], a_pOther->GetModelMatrix()[1][1], a_pOther->GetModelMatrix()[1][2]);
+	v3BRotations[2] = vector3(a_pOther->GetModelMatrix()[2][0], a_pOther->GetModelMatrix()[2][1], a_pOther->GetModelMatrix()[2][2]);
+
+	float fDistanceA, fDistanceB;
+
+	glm::mat3 m3Rotation;
+
+	// Find the rotation matrix in a's perspective
+	for (int i = 0; i <= 2; i++)
+		for (int j = 0; j <= 2; j++)
+			m3Rotation[i][j] = glm::dot(v3ARotations[i], v3BRotations[j]);
+
+	// Find the global distance between the two object centers
+	vector3 v3Distance = a_pOther->GetCenterGlobal() - GetCenterGlobal();
+
+	// Convert the distance to a's local space
+	v3Distance = vector3(glm::dot(v3Distance, v3ARotations[0]), glm::dot(v3Distance, v3ARotations[1]), glm::dot(v3Distance, v3ARotations[2]));
+
+	// Fidn the rotation matrix' absolute values
+	glm::mat3 m3RotationAbs;
+	for (int i = 0; i <= 2; i++)
+		for (int j = 0; j <= 2; j++)
+			m3RotationAbs[i][j] = std::abs(m3Rotation[i][j]);
+
+	/*
+	If the total distance between the center of the two models is 
+	greater than the sum of the half widths of each model (projected 
+	on the current axis) then there is a plane that can fit between
+	two models based on that plane.
+	*/
+
+	// Axis AX
+	fDistanceA = m_v3HalfWidth.x;
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[0][0] + a_pOther->m_v3HalfWidth.y * m3RotationAbs[0][1] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[0][2];
+	if (std::abs(v3Distance.x) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AX;
+	}
+
+	// Axis AY
+	fDistanceA = m_v3HalfWidth.y;
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[1][0] + a_pOther->m_v3HalfWidth.y * m3RotationAbs[1][1] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[1][2];
+	if (std::abs(v3Distance.y) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AY;
+	}
+
+	// Axis AZ
+	fDistanceA = m_v3HalfWidth.z;
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[2][0] + a_pOther->m_v3HalfWidth.y * m3RotationAbs[2][1] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[2][2];
+	if (std::abs(v3Distance.z) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AZ;
+	}
+
+	// Axis BX
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[0][0] + m_v3HalfWidth.y * m3RotationAbs[1][0] + m_v3HalfWidth.z * m3RotationAbs[2][0];
+	fDistanceB = a_pOther->m_v3HalfWidth.x;
+	if (std::abs(v3Distance.x * m3Rotation[0][0] + v3Distance.y * m3Rotation[1][0] + v3Distance.z * m3Rotation[2][0]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_BX;
+	}
+
+	// Axis BY
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[0][1] + m_v3HalfWidth.y * m3RotationAbs[1][1] + m_v3HalfWidth.z * m3RotationAbs[2][1];
+	fDistanceB = a_pOther->m_v3HalfWidth.y;
+	if (std::abs(v3Distance.x * m3Rotation[0][1] + v3Distance.y * m3Rotation[1][1] + v3Distance.z * m3Rotation[2][1]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_BY;
+	}
+
+	// Axis BZ
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[0][2] + m_v3HalfWidth.y * m3RotationAbs[1][2] + m_v3HalfWidth.z * m3RotationAbs[2][2];
+	fDistanceB = a_pOther->m_v3HalfWidth.z;
+	if (std::abs(v3Distance.x * m3Rotation[0][2] + v3Distance.y * m3Rotation[1][2] + v3Distance.z * m3Rotation[2][2]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_BZ;;
+	}
+
+	// Axis AXxBX
+	fDistanceA = m_v3HalfWidth.y * m3RotationAbs[2][0] + m_v3HalfWidth.z * m3RotationAbs[1][0];
+	fDistanceB = a_pOther->m_v3HalfWidth.y * m3RotationAbs[0][2] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[0][1];
+	if (std::abs(v3Distance.z * m3Rotation[1][0] - v3Distance.y * m3Rotation[2][0]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AXxBX;
+	}
+
+	// Axis AXxBY
+	fDistanceA = m_v3HalfWidth.y * m3RotationAbs[2][1] + m_v3HalfWidth.z * m3RotationAbs[1][1];
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[0][2] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[0][0];
+	if (std::abs(v3Distance.z * m3Rotation[1][1] - v3Distance.y * m3Rotation[2][1]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AXxBY;
+	}
+
+	// Axis AXxBZ
+	fDistanceA = m_v3HalfWidth.y * m3RotationAbs[2][2] + m_v3HalfWidth.z * m3RotationAbs[1][2];
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[0][1] + a_pOther->m_v3HalfWidth.y * m3RotationAbs[0][0];
+	if (std::abs(v3Distance.z * m3Rotation[1][2] - v3Distance.y * m3Rotation[2][2]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AXxBZ;
+	}
+
+	// Axis AYxBX
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[2][0] + m_v3HalfWidth.z * m3RotationAbs[0][0];
+	fDistanceB = a_pOther->m_v3HalfWidth.y * m3RotationAbs[1][2] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[1][1];
+	if (std::abs(v3Distance.x * m3Rotation[2][0] - v3Distance.z * m3Rotation[0][0]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AYxBX;
+	}
+
+	// Axis AYxBY
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[2][1] + m_v3HalfWidth.z * m3RotationAbs[0][1];
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[1][2] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[1][0];
+	if (std::abs(v3Distance.x * m3Rotation[2][1] - v3Distance.z * m3Rotation[0][1]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AYxBY;
+	}
+
+	// Axis AYxBZ
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[2][2] + m_v3HalfWidth.z * m3RotationAbs[0][2];
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[1][1] + a_pOther->m_v3HalfWidth.y * m3RotationAbs[1][0];
+	if (std::abs(v3Distance.x * m3Rotation[2][2] - v3Distance.z * m3Rotation[0][2]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AYxBZ;
+	}
+
+	// Axis AZxBX
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[1][0] + m_v3HalfWidth.y * m3RotationAbs[0][0];
+	fDistanceB = a_pOther->m_v3HalfWidth.y * m3RotationAbs[2][2] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[2][1];
+	if (std::abs(v3Distance.y * m3Rotation[0][0] - v3Distance.x * m3Rotation[1][0]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AZxBX;
+	}
+
+	// Axis AZxBY
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[1][1] + m_v3HalfWidth.y * m3RotationAbs[0][1];
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[2][2] + a_pOther->m_v3HalfWidth.z * m3RotationAbs[2][0];
+	if (std::abs(v3Distance.y * m3Rotation[0][1] - v3Distance.x * m3Rotation[1][1]) > fDistanceA + fDistanceB)
+	{
+		return eSATResults::SAT_AZxBY;
+	}
+
+	// Axis AZxBZ
+	fDistanceA = m_v3HalfWidth.x * m3RotationAbs[1][2] + m_v3HalfWidth.y * m3RotationAbs[0][2];
+	fDistanceB = a_pOther->m_v3HalfWidth.x * m3RotationAbs[2][1] + a_pOther->m_v3HalfWidth.y * m3RotationAbs[2][0];
+	if (std::abs(v3Distance.y * m3Rotation[0][2] - v3Distance.x * m3Rotation[1][2]) > fDistanceA + fDistanceB)
+	{
+
+		return eSATResults::SAT_AZxBZ;
+	}
 
 	//there is no axis test that separates this two objects
 	return eSATResults::SAT_NONE;

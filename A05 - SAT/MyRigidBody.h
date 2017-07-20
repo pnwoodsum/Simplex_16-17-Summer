@@ -247,6 +247,7 @@ private:
 	OUTPUT: 0 for colliding, other = first axis that succeeds test
 	*/
 	uint SAT(MyRigidBody* const a_pOther);
+
 };//class
 
 } //namespace Simplex
